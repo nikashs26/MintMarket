@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MintMarket - Contact Us</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="page-contact">
+  <header class="top-bar">
+    <div class="top-bar__logo">
+      <a href="index.html" class="logo-link">
+        <div class="logo-mark"></div>
+      </a>
+    </div>
+    <nav class="top-bar__nav">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="#" class="nav-link">Marketplace</a>
+      <a href="#" class="nav-link">Login</a>
+    </nav>
+    <div class="top-bar__actions">
+      <div class="cart-icon">
+        <div class="cart-icon__bag"></div>
+        <div class="cart-icon__handle"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="contact-main">
+    <div class="contact-background"></div>
+
+    <section class="contact-card">
+      <header class="contact-card__header">
+        <h1 class="contact-card__title">Contact Us</h1>
+        <p class="contact-card__subtitle">
+          Things can get confusing. Just reach out here and we’ll help you out!
+        </p>
+      </header>
+
+      <form class="contact-form"
+        action="mailto:contact@mintmarket.io?subject=MintMarket%20Contact%20Form"
+        method="post"
+        enctype="text/plain">
+        <div class="contact-form__row contact-form__row--two">
+          <label class="contact-field">
+            <span class="contact-field__label">FIRST NAME*</span>
+            <input type="text" name="first_name" required />
+          </label>
+          <label class="contact-field">
+            <span class="contact-field__label">LAST NAME*</span>
+            <input type="text" name="last_name" required />
+          </label>
+        </div>
+
+        <div class="contact-form__row contact-form__row--two">
+          <label class="contact-field contact-field--wide">
+            <span class="contact-field__label">EMAIL*</span>
+            <input type="email" name="email" required />
+          </label>
+
+          <div class="contact-field contact-field--phone">
+            <span class="contact-field__label">PHONE NUMBER (OPTIONAL)</span>
+            <div class="phone-input">
+              <div class="phone-input__country">
+                <span class="phone-input__flag"></span>
+                <span class="phone-input__code">+1</span>
+              </div>
+              <input type="tel" name="phone" />
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form__row contact-form__row--center">
+          <label class="contact-field contact-field--select">
+            <span class="contact-field__label">DEPARTMENT</span>
+            <div class="select-display">
+              <input class="select-input" type="text" name="department" placeholder="Department" />
+              <span class="select-display__icon">▼</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="contact-form__row">
+          <label class="contact-field contact-field--message">
+            <span class="contact-field__label">MESSAGE...*</span>
+            <textarea name="message" required></textarea>
+          </label>
+        </div>
+
+        <div class="contact-form__row contact-form__row--center">
+          <button type="submit" class="contact-submit">Send Message</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <div class="page-footer__top"></div>
+    <div class="page-footer__bottom">
+      <div class="footer-left">© MintMarket</div>
+      <div class="footer-center"><a class="footer-link" href="contact.html">CONTACT US</a></div>
+      <div class="footer-right"></div>
+    </div>
+  </footer>
+</body>
+
+</html>
+
+
