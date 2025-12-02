@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace - MintMarket</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">MintMarket</a>
+            <div class="nav-links" id="authLinks">
+                <a href="index.html">Login</a>
+            </div>
+            <div class="nav-links" id="userLinks" style="display: none;">
+                <a href="marketplace.html" class="active">Marketplace</a>
+                <a href="mint.html">Mint NFT</a>
+                <a href="profile.html" id="navUsername">Profile</a>
+                <span id="navBalance" class="balance-display">0.00 MTK</span>
+                <a href="#" id="logoutBtn">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container main-content">
+        <div class="page-header">
+            <h1>Explore NFTs</h1>
+            <p>Buy and sell digital art with zero fees.</p>
+        </div>
+
+        <div id="listingsContainer" class="nft-grid">
+            <!-- Listings loaded via JS -->
+            <div class="loading">Loading...</div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
