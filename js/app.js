@@ -2,7 +2,23 @@
  * MintMarket Application Logic
  */
 
-const api = new MintMarketAPI();
+const api = (() => {
+    try {
+        if (typeof MintMarketAPI !== 'undefined') {
+            console.log('MintMarket App: API Initialized');
+            return new MintMarketAPI();
+        } else {
+            console.error('MintMarket App: MintMarketAPI class not found');
+            return {
+                getProfile: async () => ({ success: false }),
+                // Minimum mock to prevent immediate crash on load
+            };
+        }
+    } catch (e) {
+        console.error('MintMarket App: Failed to initialize API', e);
+        return { getProfile: async () => ({ success: false }) };
+    }
+})();
 
 // Simple router based on current page
 document.addEventListener('DOMContentLoaded', async () => {
@@ -97,10 +113,10 @@ async function loadMarketplace(tags = '', search = '') {
         container.innerHTML = result.listings.map(listing => {
             // Generate tag badges from actual tags
             const tagsArray = listing.tags_array || [];
-            const tagBadges = tagsArray.slice(0, 3).map(tag => 
+            const tagBadges = tagsArray.slice(0, 3).map(tag =>
                 `<span class="nft-tag">${tag}</span>`
             ).join('');
-            
+
             return `
             <div class="nft-card">
                 <div class="nft-image" style="background-image: url('${listing.image_url}')">
@@ -162,12 +178,12 @@ function initTagFilters() {
 function updateActiveFiltersDisplay() {
     const container = document.getElementById('activeFilters');
     const tagsContainer = document.getElementById('activeFilterTags');
-    
+
     if (activeTagFilters.length === 0) {
         container.style.display = 'none';
         return;
     }
-    
+
     container.style.display = 'flex';
     tagsContainer.innerHTML = activeTagFilters.map(tag => `
         <span class="active-filter-tag">
@@ -179,7 +195,7 @@ function updateActiveFiltersDisplay() {
 
 function removeTagFilter(tag) {
     activeTagFilters = activeTagFilters.filter(t => t !== tag);
-    
+
     // Update button state
     const filterTags = document.querySelectorAll('.filter-tag');
     filterTags.forEach(btn => {
@@ -187,7 +203,7 @@ function removeTagFilter(tag) {
             btn.classList.remove('active');
         }
     });
-    
+
     updateActiveFiltersDisplay();
     applyFilters();
 }
@@ -195,15 +211,15 @@ function removeTagFilter(tag) {
 function clearFilters() {
     activeTagFilters = [];
     currentSearchTerm = '';
-    
+
     // Clear button states
     const filterTags = document.querySelectorAll('.filter-tag');
     filterTags.forEach(btn => btn.classList.remove('active'));
-    
+
     // Clear search input
     const searchInput = document.getElementById('searchInput');
     if (searchInput) searchInput.value = '';
-    
+
     updateActiveFiltersDisplay();
     applyFilters();
 }
@@ -398,11 +414,11 @@ function setupMintForm() {
         const royalty = document.getElementById('royalty').value;
         const price = document.getElementById('price').value;
         const imageFile = document.getElementById('image').files[0];
-        
+
         // Collect selected tags
         const tagCheckboxes = document.querySelectorAll('input[name="tags"]:checked');
         const selectedTags = Array.from(tagCheckboxes).map(cb => cb.value);
-        
+
         // Validate tags (max 5)
         if (selectedTags.length > 5) {
             alert('Please select a maximum of 5 tags');
