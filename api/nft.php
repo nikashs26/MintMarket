@@ -51,8 +51,13 @@ switch ($action) {
         $title = $_POST['title'] ?? '';
         $description = $_POST['description'] ?? '';
         $royalty = (float)($_POST['royalty_percentage'] ?? 10);
+        
+        // Parse tags from POST data
+        $tagsInput = $_POST['tags'] ?? '';
+        $tags = !empty($tagsInput) ? explode(',', $tagsInput) : [];
+        $tags = array_map('trim', $tags);
 
-        $result = $nftModel->mint($_SESSION['user_id'], $title, $description, $imageUrl, $royalty);
+        $result = $nftModel->mint($_SESSION['user_id'], $title, $description, $imageUrl, $royalty, $tags);
         
         // Add image URL to response if successful
         if ($result['success']) {
@@ -105,6 +110,14 @@ switch ($action) {
         // Direct transfer (gift) implies price is 0
         $result = $nftModel->transfer($nftId, $_SESSION['user_id'], $toUserId, 0);
         echo json_encode($result);
+        break;
+    
+    case 'get_tags':
+        // Return available tags for the mint form
+        echo json_encode([
+            'success' => true,
+            'tags' => NFT::getAvailableTags()
+        ]);
         break;
 
     default:

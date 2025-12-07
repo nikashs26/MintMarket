@@ -47,6 +47,57 @@
                 </div>
 
                 <div class="form-group">
+                    <label>Tags (select up to 5)</label>
+                    <div class="tags-container" id="tagsContainer">
+                        <div class="tag-category">
+                            <h4>Art Style</h4>
+                            <div class="tag-options">
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Digital Art"><span>Digital Art</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="3D"><span>3D</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Pixel Art"><span>Pixel Art</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Abstract"><span>Abstract</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Photography"><span>Photography</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Generative"><span>Generative</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="AI Art"><span>AI Art</span></label>
+                            </div>
+                        </div>
+                        <div class="tag-category">
+                            <h4>Theme</h4>
+                            <div class="tag-options">
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Nature"><span>Nature</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Portrait"><span>Portrait</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Fantasy"><span>Fantasy</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Sci-Fi"><span>Sci-Fi</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Anime"><span>Anime</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Gaming"><span>Gaming</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Music"><span>Music</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Sports"><span>Sports</span></label>
+                            </div>
+                        </div>
+                        <div class="tag-category">
+                            <h4>Rarity</h4>
+                            <div class="tag-options">
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="1/1"><span>1/1</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Limited Edition"><span>Limited Edition</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Common"><span>Common</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Rare"><span>Rare</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Legendary"><span>Legendary</span></label>
+                            </div>
+                        </div>
+                        <div class="tag-category">
+                            <h4>Media</h4>
+                            <div class="tag-options">
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Static"><span>Static</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Animated"><span>Animated</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Interactive"><span>Interactive</span></label>
+                                <label class="tag-checkbox"><input type="checkbox" name="tags" value="Audio"><span>Audio</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <small>Tags help buyers discover your NFT.</small>
+                </div>
+
+                <div class="form-group">
                     <label for="price">Sale Price (MTK)</label>
                     <input type="number" id="price" min="0.01" step="0.01" required placeholder="e.g. 10.00">
                     <small>Set the price for your NFT in the marketplace.</small>
@@ -70,6 +121,23 @@
 
     <script src="js/api.js"></script>
     <script src="js/app.js"></script>
+    <script>
+        // Limit tag selection to 5
+        document.addEventListener('DOMContentLoaded', function() {
+            const tagCheckboxes = document.querySelectorAll('input[name="tags"]');
+            const maxTags = 5;
+            
+            tagCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const checked = document.querySelectorAll('input[name="tags"]:checked');
+                    if (checked.length > maxTags) {
+                        this.checked = false;
+                        alert(`You can select a maximum of ${maxTags} tags.`);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

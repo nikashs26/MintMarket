@@ -51,7 +51,9 @@ switch ($action) {
     case 'get_listings':
         $limit = (int)($_GET['limit'] ?? 50);
         $offset = (int)($_GET['offset'] ?? 0);
-        $result = $marketplace->getActiveListings($limit, $offset);
+        $tags = isset($_GET['tags']) ? $_GET['tags'] : '';
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
+        $result = $marketplace->getActiveListings($limit, $offset, $tags, $search);
         echo json_encode($result);
         break;
 

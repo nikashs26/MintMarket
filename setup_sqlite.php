@@ -30,6 +30,7 @@ try {
         title TEXT NOT NULL,
         description TEXT,
         image_url TEXT NOT NULL,
+        tags TEXT DEFAULT '',
         creator_id INTEGER NOT NULL,
         current_owner_id INTEGER NOT NULL,
         royalty_percentage REAL DEFAULT 10.00,
@@ -39,6 +40,10 @@ try {
         FOREIGN KEY (current_owner_id) REFERENCES users(user_id)
     )");
     echo "Created 'nfts' table.\n";
+    
+    // Create index for tag searching
+    $db->exec("CREATE INDEX IF NOT EXISTS idx_nft_tags ON nfts(tags)");
+    echo "Created tags index.\n";
 
     // Transactions Table
     $db->exec("CREATE TABLE IF NOT EXISTS transactions (

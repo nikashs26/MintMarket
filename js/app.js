@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (path.includes('marketplace.html')) {
         loadMarketplace();
+        initTagFilters();
     } else if (path.includes('profile.html')) {
         loadProfile();
     } else if (path.includes('mint.html')) {
@@ -75,26 +76,36 @@ async function handleLogout(e) {
 
 // --- Marketplace Page ---
 
-async function loadMarketplace() {
+// --- Marketplace Filtering ---
+let activeTagFilters = [];
+let currentSearchTerm = '';
+
+async function loadMarketplace(tags = '', search = '') {
     const container = document.getElementById('listingsContainer');
     if (!container) return;
 
     container.innerHTML = '<div class="loading">Loading listings...</div>';
 
-    const result = await api.getActiveListings();
+    const result = await api.getActiveListings(50, 0, tags, search);
 
     if (result.success) {
         if (result.listings.length === 0) {
-            container.innerHTML = '<div class="no-data">No active listings found.</div>';
+            container.innerHTML = '<div class="no-data">No NFTs found matching your filters.</div>';
             return;
         }
 
-        container.innerHTML = result.listings.map(listing => `
+        container.innerHTML = result.listings.map(listing => {
+            // Generate tag badges from actual tags
+            const tagsArray = listing.tags_array || [];
+            const tagBadges = tagsArray.slice(0, 3).map(tag => 
+                `<span class="nft-tag">${tag}</span>`
+            ).join('');
+            
+            return `
             <div class="nft-card">
                 <div class="nft-image" style="background-image: url('${listing.image_url}')">
                     <div class="nft-tags">
-                        <span class="nft-tag">NFT</span>
-                        <span class="nft-tag">${listing.royalty_percent || 10}% ROYALTY</span>
+                        ${tagBadges || '<span class="nft-tag">NFT</span>'}
                     </div>
                 </div>
                 <div class="nft-info">
@@ -110,11 +121,110 @@ async function loadMarketplace() {
                     </div>
                 </div>
             </div>
-        `).join('');
+        `}).join('');
     } else {
         container.innerHTML = '<div class="error">Failed to load listings.</div>';
     }
 }
+
+function toggleFilters() {
+    const panel = document.getElementById('tagFiltersPanel');
+    const btn = document.getElementById('filterToggle');
+    if (panel) {
+        if (panel.style.display === 'none') {
+            panel.style.display = 'block';
+            btn.textContent = 'FILTER ▲';
+        } else {
+            panel.style.display = 'none';
+            btn.textContent = 'FILTER ▼';
+        }
+    }
+}
+
+function initTagFilters() {
+    const filterTags = document.querySelectorAll('.filter-tag');
+    filterTags.forEach(tag => {
+        tag.addEventListener('click', () => {
+            const tagValue = tag.dataset.tag;
+            if (tag.classList.contains('active')) {
+                tag.classList.remove('active');
+                activeTagFilters = activeTagFilters.filter(t => t !== tagValue);
+            } else {
+                tag.classList.add('active');
+                activeTagFilters.push(tagValue);
+            }
+            updateActiveFiltersDisplay();
+            applyFilters();
+        });
+    });
+}
+
+function updateActiveFiltersDisplay() {
+    const container = document.getElementById('activeFilters');
+    const tagsContainer = document.getElementById('activeFilterTags');
+    
+    if (activeTagFilters.length === 0) {
+        container.style.display = 'none';
+        return;
+    }
+    
+    container.style.display = 'flex';
+    tagsContainer.innerHTML = activeTagFilters.map(tag => `
+        <span class="active-filter-tag">
+            ${tag}
+            <button class="remove-tag" onclick="removeTagFilter('${tag}')">×</button>
+        </span>
+    `).join('');
+}
+
+function removeTagFilter(tag) {
+    activeTagFilters = activeTagFilters.filter(t => t !== tag);
+    
+    // Update button state
+    const filterTags = document.querySelectorAll('.filter-tag');
+    filterTags.forEach(btn => {
+        if (btn.dataset.tag === tag) {
+            btn.classList.remove('active');
+        }
+    });
+    
+    updateActiveFiltersDisplay();
+    applyFilters();
+}
+
+function clearFilters() {
+    activeTagFilters = [];
+    currentSearchTerm = '';
+    
+    // Clear button states
+    const filterTags = document.querySelectorAll('.filter-tag');
+    filterTags.forEach(btn => btn.classList.remove('active'));
+    
+    // Clear search input
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) searchInput.value = '';
+    
+    updateActiveFiltersDisplay();
+    applyFilters();
+}
+
+function handleSearch(event) {
+    if (event.key === 'Enter') {
+        currentSearchTerm = event.target.value.trim();
+        applyFilters();
+    }
+}
+
+function applyFilters() {
+    const tags = activeTagFilters.join(',');
+    loadMarketplace(tags, currentSearchTerm);
+}
+
+// Make filter functions global
+window.toggleFilters = toggleFilters;
+window.clearFilters = clearFilters;
+window.handleSearch = handleSearch;
+window.removeTagFilter = removeTagFilter;
 
 async function buyNFT(listingId) {
     // Check if user is logged in
@@ -301,6 +411,18 @@ function setupMintForm() {
         const royalty = document.getElementById('royalty').value;
         const price = document.getElementById('price').value;
         const imageFile = document.getElementById('image').files[0];
+        
+        // Collect selected tags
+        const tagCheckboxes = document.querySelectorAll('input[name="tags"]:checked');
+        const selectedTags = Array.from(tagCheckboxes).map(cb => cb.value);
+        
+        // Validate tags (max 5)
+        if (selectedTags.length > 5) {
+            alert('Please select a maximum of 5 tags');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Mint & List NFT';
+            return;
+        }
 
         // Validate price
         if (!price || parseFloat(price) <= 0) {
@@ -310,7 +432,7 @@ function setupMintForm() {
             return;
         }
 
-        const result = await api.mintNFT(title, description, imageFile, royalty);
+        const result = await api.mintNFT(title, description, imageFile, royalty, selectedTags);
 
         if (result.success) {
             // Now list the NFT for sale
