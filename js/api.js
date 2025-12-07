@@ -58,12 +58,13 @@ class MintMarketAPI {
 
     // --- NFT Operations ---
 
-    async mintNFT(title, description, imageFile, royaltyPercentage) {
+    async mintNFT(title, description, imageFile, royaltyPercentage, tags = []) {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('description', description);
         formData.append('image', imageFile);
         formData.append('royalty_percentage', royaltyPercentage);
+        formData.append('tags', tags.join(','));
 
         return this.request('nft.php?action=mint', 'POST', formData, true);
     }
@@ -86,8 +87,11 @@ class MintMarketAPI {
         return this.request('marketplace.php?action=buy', 'POST', { listing_id: listingId });
     }
 
-    async getActiveListings(limit = 50, offset = 0) {
-        return this.request(`marketplace.php?action=get_listings&limit=${limit}&offset=${offset}`);
+    async getActiveListings(limit = 50, offset = 0, tags = '', search = '') {
+        let url = `marketplace.php?action=get_listings&limit=${limit}&offset=${offset}`;
+        if (tags) url += `&tags=${encodeURIComponent(tags)}`;
+        if (search) url += `&search=${encodeURIComponent(search)}`;
+        return this.request(url);
     }
 
     async cancelListing(listingId) {

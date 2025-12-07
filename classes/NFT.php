@@ -12,6 +12,42 @@ class NFT {
     }
 
     /**
+     * Available NFT tags by category
+     */
+    public static $availableTags = [
+        'Art Style' => ['Digital Art', '3D', 'Pixel Art', 'Abstract', 'Photography', 'Generative', 'AI Art'],
+        'Theme' => ['Nature', 'Portrait', 'Fantasy', 'Sci-Fi', 'Anime', 'Gaming', 'Music', 'Sports'],
+        'Rarity' => ['1/1', 'Limited Edition', 'Common', 'Rare', 'Legendary'],
+        'Media' => ['Static', 'Animated', 'Interactive', 'Audio']
+    ];
+
+    /**
+     * Get all available tags
+     */
+    public static function getAvailableTags() {
+        return self::$availableTags;
+    }
+
+    /**
+     * Validate tags against available options
+     */
+    private function validateTags($tags) {
+        $allTags = [];
+        foreach (self::$availableTags as $category => $categoryTags) {
+            $allTags = array_merge($allTags, $categoryTags);
+        }
+        
+        $validTags = [];
+        foreach ($tags as $tag) {
+            $tag = trim($tag);
+            if (in_array($tag, $allTags)) {
+                $validTags[] = $tag;
+            }
+        }
+        return $validTags;
+    }
+
+    /**
      * Mint a new NFT
      * 
      * @param int $creatorId
@@ -19,9 +55,10 @@ class NFT {
      * @param string $description
      * @param string $imageUrl
      * @param float $royaltyPercentage
+     * @param array $tags
      * @return array
      */
-    public function mint($creatorId, $title, $description, $imageUrl, $royaltyPercentage) {
+    public function mint($creatorId, $title, $description, $imageUrl, $royaltyPercentage, $tags = []) {
         // Validation
         if (empty($title)) {
             return ['success' => false, 'message' => 'Title is required'];
@@ -30,17 +67,21 @@ class NFT {
             return ['success' => false, 'message' => 'Royalty must be between 0% and 50%'];
         }
 
+        // Validate and sanitize tags
+        $validTags = $this->validateTags($tags);
+        $tagsString = implode(',', $validTags);
+
         // Generate Token ID
         $tokenId = '0x' . bin2hex(random_bytes(32));
 
         try {
             $this->db->beginTransaction();
 
-            // Insert NFT
-            $sql = "INSERT INTO nfts (token_id, title, description, image_url, creator_id, current_owner_id, royalty_percentage) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+            // Insert NFT with tags
+            $sql = "INSERT INTO nfts (token_id, title, description, image_url, tags, creator_id, current_owner_id, royalty_percentage) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($sql);
-            $stmt->execute([$tokenId, $title, $description, $imageUrl, $creatorId, $creatorId, $royaltyPercentage]);
+            $stmt->execute([$tokenId, $title, $description, $imageUrl, $tagsString, $creatorId, $creatorId, $royaltyPercentage]);
             $nftId = $this->db->lastInsertId();
 
             // Add to Blockchain (Mint transaction)
@@ -52,6 +93,7 @@ class NFT {
                 'success' => true,
                 'nft_id' => $nftId,
                 'token_id' => $tokenId,
+                'tags' => $validTags,
                 'message' => 'NFT minted successfully'
             ];
 

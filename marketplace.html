@@ -35,8 +35,66 @@
             <div class="marketplace-header">
                 <h1>MARKETPLACE</h1>
                 <div class="marketplace-filters">
-                    <button class="filter-button">FILTER</button>
-                    <input type="text" class="search-bar" placeholder="Search NFTs...">
+                    <button class="filter-button" id="filterToggle" onclick="toggleFilters()">FILTER ▼</button>
+                    <input type="text" class="search-bar" id="searchInput" placeholder="Search NFTs..." onkeyup="handleSearch(event)">
+                </div>
+            </div>
+            
+            <!-- Tag Filters Panel -->
+            <div class="tag-filters-panel" id="tagFiltersPanel" style="display: none;">
+                <div class="tag-filters-header">
+                    <h3>Filter by Tags</h3>
+                    <button class="clear-filters-btn" onclick="clearFilters()">Clear All</button>
+                </div>
+                <div class="tag-filters-grid">
+                    <div class="filter-category">
+                        <h4>Art Style</h4>
+                        <div class="filter-tags">
+                            <button class="filter-tag" data-tag="Digital Art">Digital Art</button>
+                            <button class="filter-tag" data-tag="3D">3D</button>
+                            <button class="filter-tag" data-tag="Pixel Art">Pixel Art</button>
+                            <button class="filter-tag" data-tag="Abstract">Abstract</button>
+                            <button class="filter-tag" data-tag="Photography">Photography</button>
+                            <button class="filter-tag" data-tag="Generative">Generative</button>
+                            <button class="filter-tag" data-tag="AI Art">AI Art</button>
+                        </div>
+                    </div>
+                    <div class="filter-category">
+                        <h4>Theme</h4>
+                        <div class="filter-tags">
+                            <button class="filter-tag" data-tag="Nature">Nature</button>
+                            <button class="filter-tag" data-tag="Portrait">Portrait</button>
+                            <button class="filter-tag" data-tag="Fantasy">Fantasy</button>
+                            <button class="filter-tag" data-tag="Sci-Fi">Sci-Fi</button>
+                            <button class="filter-tag" data-tag="Anime">Anime</button>
+                            <button class="filter-tag" data-tag="Gaming">Gaming</button>
+                            <button class="filter-tag" data-tag="Music">Music</button>
+                            <button class="filter-tag" data-tag="Sports">Sports</button>
+                        </div>
+                    </div>
+                    <div class="filter-category">
+                        <h4>Rarity</h4>
+                        <div class="filter-tags">
+                            <button class="filter-tag" data-tag="1/1">1/1</button>
+                            <button class="filter-tag" data-tag="Limited Edition">Limited Edition</button>
+                            <button class="filter-tag" data-tag="Common">Common</button>
+                            <button class="filter-tag" data-tag="Rare">Rare</button>
+                            <button class="filter-tag" data-tag="Legendary">Legendary</button>
+                        </div>
+                    </div>
+                    <div class="filter-category">
+                        <h4>Media</h4>
+                        <div class="filter-tags">
+                            <button class="filter-tag" data-tag="Static">Static</button>
+                            <button class="filter-tag" data-tag="Animated">Animated</button>
+                            <button class="filter-tag" data-tag="Interactive">Interactive</button>
+                            <button class="filter-tag" data-tag="Audio">Audio</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="active-filters" id="activeFilters" style="display: none;">
+                    <span>Active filters:</span>
+                    <div class="active-filter-tags" id="activeFilterTags"></div>
                 </div>
             </div>
         </div>

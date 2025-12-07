@@ -181,39 +181,119 @@ class Marketplace {
     }
 
     /**
-     * Get active listings
+     * Get active listings with optional tag and search filtering
      * 
      * @param int $limit
      * @param int $offset
+     * @param string $tags Comma-separated tags to filter by
+     * @param string $search Search term for title
      * @return array
      */
-    public function getActiveListings($limit = 50, $offset = 0) {
+    public function getActiveListings($limit = 50, $offset = 0, $tags = '', $search = '') {
         $limit = min($limit, 100);
 
-        $sql = "SELECT l.*, n.title, n.image_url, n.royalty_percentage, 
+        $sql = "SELECT l.*, n.title, n.image_url, n.royalty_percentage, n.tags,
                 u.username as seller_username, c.username as creator_username
                 FROM listings l
                 JOIN nfts n ON l.nft_id = n.nft_id
                 JOIN users u ON l.seller_id = u.user_id
                 JOIN users c ON n.creator_id = c.user_id
-                WHERE l.status = 'active'
-                ORDER BY l.created_at DESC
-                LIMIT :limit OFFSET :offset";
+                WHERE l.status = 'active'";
+        
+        $params = [];
+        
+        // Add tag filtering
+        if (!empty($tags)) {
+            $tagArray = explode(',', $tags);
+            $tagConditions = [];
+            foreach ($tagArray as $index => $tag) {
+                $tag = trim($tag);
+                if (!empty($tag)) {
+                    $paramName = ":tag{$index}";
+                    $tagConditions[] = "n.tags LIKE {$paramName}";
+                    $params[$paramName] = '%' . $tag . '%';
+                }
+            }
+            if (!empty($tagConditions)) {
+                $sql .= " AND (" . implode(' OR ', $tagConditions) . ")";
+            }
+        }
+        
+        // Add search filtering
+        if (!empty($search)) {
+            $sql .= " AND n.title LIKE :search";
+            $params[':search'] = '%' . $search . '%';
+        }
+        
+        $sql .= " ORDER BY l.created_at DESC LIMIT :limit OFFSET :offset";
         
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value, PDO::PARAM_STR);
+        }
+        
         $stmt->execute();
         $listings = $stmt->fetchAll();
+        
+        // Parse tags for each listing
+        foreach ($listings as &$listing) {
+            $listing['tags_array'] = !empty($listing['tags']) ? explode(',', $listing['tags']) : [];
+        }
 
-        $countStmt = $this->db->query("SELECT COUNT(*) FROM listings WHERE status = 'active'");
+        // Count query with same filters
+        $countSql = "SELECT COUNT(*) FROM listings l
+                     JOIN nfts n ON l.nft_id = n.nft_id
+                     WHERE l.status = 'active'";
+        
+        if (!empty($tags)) {
+            $tagArray = explode(',', $tags);
+            $tagConditions = [];
+            foreach ($tagArray as $index => $tag) {
+                $tag = trim($tag);
+                if (!empty($tag)) {
+                    $tagConditions[] = "n.tags LIKE :ctag{$index}";
+                }
+            }
+            if (!empty($tagConditions)) {
+                $countSql .= " AND (" . implode(' OR ', $tagConditions) . ")";
+            }
+        }
+        
+        if (!empty($search)) {
+            $countSql .= " AND n.title LIKE :csearch";
+        }
+        
+        $countStmt = $this->db->prepare($countSql);
+        
+        if (!empty($tags)) {
+            $tagArray = explode(',', $tags);
+            foreach ($tagArray as $index => $tag) {
+                $tag = trim($tag);
+                if (!empty($tag)) {
+                    $countStmt->bindValue(":ctag{$index}", '%' . $tag . '%', PDO::PARAM_STR);
+                }
+            }
+        }
+        
+        if (!empty($search)) {
+            $countStmt->bindValue(':csearch', '%' . $search . '%', PDO::PARAM_STR);
+        }
+        
+        $countStmt->execute();
         $total = $countStmt->fetchColumn();
 
         return [
             'success' => true,
             'listings' => $listings,
             'total' => $total,
-            'page' => floor($offset / $limit) + 1
+            'page' => floor($offset / $limit) + 1,
+            'filters' => [
+                'tags' => $tags,
+                'search' => $search
+            ]
         ];
     }
 
