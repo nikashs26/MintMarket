@@ -5,88 +5,175 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MintMarket - Zero-Fee NFT Marketplace</title>
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
         <div class="container">
             <a href="index.html" class="logo">MintMarket</a>
             <div class="nav-links" id="authLinks">
-                <a href="#login" onclick="showLogin()">Login</a>
-                <a href="#register" onclick="showRegister()" class="btn-primary">Register</a>
+                <a href="index.html" class="active">HOME</a>
+                <a href="marketplace.html">MARKETPLACE</a>
+                <a href="#" onclick="event.preventDefault(); showLogin();">LOGIN</a>
             </div>
             <div class="nav-links" id="userLinks" style="display: none;">
-                <a href="marketplace.html">Marketplace</a>
-                <a href="mint.html">Mint NFT</a>
-                <a href="profile.html" id="navUsername">Profile</a>
-                <span id="navBalance" class="balance-display">0.00 MTK</span>
-                <a href="#" id="logoutBtn">Logout</a>
+                <a href="index.html" class="active">HOME</a>
+                <a href="marketplace.html">MARKETPLACE</a>
+                <a href="profile.html" id="navUsername">OWN</a>
+                <a href="cart.html" class="cart-link">
+                    <span class="cart-icon-nav">🛒</span>
+                    <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
+                </a>
             </div>
         </div>
     </nav>
 
     <main class="hero-section">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Discover, Collect, and Sell Extraordinary NFTs</h1>
-                <p>MintMarket is the world's first zero-fee marketplace with built-in royalties for creators.</p>
-                <div class="hero-buttons">
-                    <a href="marketplace.html" class="btn-primary">Explore</a>
-                    <a href="mint.html" class="btn-secondary">Create</a>
-                </div>
+        <div class="hero-background"></div>
+        <div class="hero-content">
+            <div class="purpose-card">
+                <h2>PURPOSE</h2>
+                <p>WE BRING YOU THE FUTURE OF DIGITAL ART OWNERSHIP. BUY, SELL, AND TRADE UNIQUE DIGITAL COLLECTIBLES ON A SECURE BLOCKCHAIN-POWERED MARKETPLACE. EVERY NFT SUPPORTS ARTISTS WITH AUTOMATIC ROYALTIES, ENSURING CREATORS EARN FROM EVERY RESALE.</p>
             </div>
-            
-            <!-- Auth Forms -->
-            <div class="auth-container" id="authContainer">
-                <!-- Login Form -->
-                <form id="loginForm" class="auth-form">
-                    <h2>Welcome Back</h2>
-                    <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" id="loginUsername" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" id="loginPassword" required>
-                    </div>
-                    <button type="submit" class="btn-primary full-width">Login</button>
-                    <p class="switch-auth">New here? <a href="#" onclick="showRegister()">Create an account</a></p>
-                </form>
+            <a href="marketplace.html" class="cta-button">HOP INTO THE MARKETPLACE!</a>
+        </div>
+        
+        <!-- Auth Overlay (blur background) -->
+        <div class="auth-overlay" id="authOverlay"></div>
+        
+        <!-- Auth Forms (shown by default when not logged in) -->
+        <div class="auth-container" id="authContainer" style="display: none;">
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form">
+                <button type="button" class="close-btn" onclick="hideAuth()">&times;</button>
+                <h2>WELCOME BACK</h2>
+                <p style="text-align: center; margin-bottom: 1.5rem; color: var(--color-text-main); opacity: 0.9;">Please enter your details</p>
+                <div class="form-group">
+                    <label>USERNAME OR EMAIL</label>
+                    <input type="text" id="loginUsername" required>
+                </div>
+                <div class="form-group">
+                    <label>PASSWORD</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn-primary full-width">SIGN IN</button>
+                <button type="button" class="btn-google full-width" onclick="showGoogleSignIn()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" style="margin-right: 10px;">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    SIGN IN WITH GOOGLE
+                </button>
+                <p class="switch-auth">Don't have an account? <a href="#" onclick="showRegister()">Sign Up</a></p>
+            </form>
 
-                <!-- Register Form -->
-                <form id="registerForm" class="auth-form" style="display: none;">
-                    <h2>Create Account</h2>
-                    <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" id="regUsername" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="regEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" id="regPassword" required minlength="8">
-                    </div>
-                    <button type="submit" class="btn-primary full-width">Register</button>
-                    <p class="switch-auth">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
-                </form>
+            <!-- Register Form -->
+            <form id="registerForm" class="auth-form" style="display: none;">
+                <button type="button" class="close-btn" onclick="hideAuth()">&times;</button>
+                <h2>CREATE ACCOUNT</h2>
+                <div class="form-group">
+                    <label>USERNAME</label>
+                    <input type="text" id="regUsername" required>
+                </div>
+                <div class="form-group">
+                    <label>EMAIL</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>PASSWORD</label>
+                    <input type="password" id="regPassword" required minlength="8">
+                </div>
+                <button type="submit" class="btn-primary full-width">REGISTER</button>
+                <p class="switch-auth">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+            </form>
+        </div>
+        
+        <div class="hero-art-meta">
+            <div>
+                <div class="hero-art-title">DIVINE GOD</div>
+                <div class="hero-art-author">BY: SOUL</div>
             </div>
         </div>
+        
+        <!-- Carousel dots -->
+        <div class="carousel-dots">
+            <div class="dot dot--active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
     </main>
+
+    <footer class="page-footer">
+        <div class="page-footer__top">
+            <div class="page-footer__dots">
+                <div class="dot dot--active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+        <div class="page-footer__bottom">
+            <div class="footer-left">© NAME</div>
+            <div class="footer-center"><a class="footer-link" href="contact.html">CONTACT US</a></div>
+            <div class="footer-right"></div>
+        </div>
+    </footer>
 
     <script src="js/api.js"></script>
     <script src="js/app.js"></script>
     <script>
-        // Auth UI Toggles
+        // Auth UI Toggles (api is already defined in app.js)
         function showLogin() {
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('registerForm').style.display = 'none';
+            const authContainer = document.getElementById('authContainer');
+            const authOverlay = document.getElementById('authOverlay');
+            if (authContainer) {
+                authContainer.style.display = 'block';
+                if (authOverlay) authOverlay.classList.add('active');
+                const loginForm = document.getElementById('loginForm');
+                const registerForm = document.getElementById('registerForm');
+                if (loginForm) loginForm.style.display = 'block';
+                if (registerForm) registerForm.style.display = 'none';
+            }
         }
+        
         function showRegister() {
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('registerForm').style.display = 'block';
+            const authContainer = document.getElementById('authContainer');
+            const authOverlay = document.getElementById('authOverlay');
+            if (authContainer) {
+                authContainer.style.display = 'block';
+                if (authOverlay) authOverlay.classList.add('active');
+                const loginForm = document.getElementById('loginForm');
+                const registerForm = document.getElementById('registerForm');
+                if (loginForm) loginForm.style.display = 'none';
+                if (registerForm) registerForm.style.display = 'block';
+            }
         }
+        
+        function hideAuth() {
+            const authContainer = document.getElementById('authContainer');
+            const authOverlay = document.getElementById('authOverlay');
+            if (authContainer) authContainer.style.display = 'none';
+            if (authOverlay) authOverlay.classList.remove('active');
+        }
+        
+        // Make functions available globally
+        window.showLogin = showLogin;
+        window.showRegister = showRegister;
+        window.hideAuth = hideAuth;
+        
+        // Close auth form when clicking overlay
+        document.getElementById('authOverlay').addEventListener('click', hideAuth);
 
         // Handle Forms
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -114,6 +201,51 @@
                 alert(res.message);
             }
         });
+        
+        // Check auth status on load
+        document.addEventListener('DOMContentLoaded', async () => {
+            const result = await api.getProfile();
+            updateNav(result.success, result.profile);
+            
+            // After auth check, show login form if hash is #login
+            if (!result.success && window.location.hash === '#login') {
+                showLogin();
+            } else if (!result.success && window.location.hash === '#register') {
+                showRegister();
+            }
+        });
+        
+        function updateNav(isLoggedIn, user = null) {
+            const authLinks = document.getElementById('authLinks');
+            const userLinks = document.getElementById('userLinks');
+
+            if (isLoggedIn) {
+                if (authLinks) authLinks.style.display = 'none';
+                if (userLinks) {
+                    userLinks.style.display = 'flex';
+                    if (user) {
+                        const navUsername = document.getElementById('navUsername');
+                        if (navUsername) navUsername.textContent = user.username.toUpperCase();
+                    }
+                }
+            } else {
+                if (authLinks) authLinks.style.display = 'flex';
+                if (userLinks) userLinks.style.display = 'none';
+            }
+        }
+        
+        // Check hash on load and show login if needed
+        window.addEventListener('hashchange', function() {
+            if (window.location.hash === '#login') {
+                showLogin();
+            } else if (window.location.hash === '#register') {
+                showRegister();
+            }
+        });
+        
+        function showGoogleSignIn() {
+            alert('Google Sign In functionality coming soon!');
+        }
     </script>
 </body>
 </html>
