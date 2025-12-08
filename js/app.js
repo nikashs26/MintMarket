@@ -2,7 +2,23 @@
  * MintMarket Application Logic
  */
 
-const api = new MintMarketAPI();
+const api = (() => {
+    try {
+        if (typeof MintMarketAPI !== 'undefined') {
+            console.log('MintMarket App: API Initialized');
+            return new MintMarketAPI();
+        } else {
+            console.error('MintMarket App: MintMarketAPI class not found');
+            return {
+                getProfile: async () => ({ success: false }),
+                // Minimum mock to prevent immediate crash on load
+            };
+        }
+    } catch (e) {
+        console.error('MintMarket App: Failed to initialize API', e);
+        return { getProfile: async () => ({ success: false }) };
+    }
+})();
 
 // Simple router based on current page
 document.addEventListener('DOMContentLoaded', async () => {
@@ -97,10 +113,10 @@ async function loadMarketplace(tags = '', search = '') {
         container.innerHTML = result.listings.map(listing => {
             // Generate tag badges from actual tags
             const tagsArray = listing.tags_array || [];
-            const tagBadges = tagsArray.slice(0, 3).map(tag => 
+            const tagBadges = tagsArray.slice(0, 3).map(tag =>
                 `<span class="nft-tag">${tag}</span>`
             ).join('');
-            
+
             return `
             <div class="nft-card">
                 <div class="nft-image" style="background-image: url('${listing.image_url}')">
@@ -162,12 +178,12 @@ function initTagFilters() {
 function updateActiveFiltersDisplay() {
     const container = document.getElementById('activeFilters');
     const tagsContainer = document.getElementById('activeFilterTags');
-    
+
     if (activeTagFilters.length === 0) {
         container.style.display = 'none';
         return;
     }
-    
+
     container.style.display = 'flex';
     tagsContainer.innerHTML = activeTagFilters.map(tag => `
         <span class="active-filter-tag">
@@ -179,7 +195,7 @@ function updateActiveFiltersDisplay() {
 
 function removeTagFilter(tag) {
     activeTagFilters = activeTagFilters.filter(t => t !== tag);
-    
+
     // Update button state
     const filterTags = document.querySelectorAll('.filter-tag');
     filterTags.forEach(btn => {
@@ -187,7 +203,7 @@ function removeTagFilter(tag) {
             btn.classList.remove('active');
         }
     });
-    
+
     updateActiveFiltersDisplay();
     applyFilters();
 }
@@ -195,15 +211,15 @@ function removeTagFilter(tag) {
 function clearFilters() {
     activeTagFilters = [];
     currentSearchTerm = '';
-    
+
     // Clear button states
     const filterTags = document.querySelectorAll('.filter-tag');
     filterTags.forEach(btn => btn.classList.remove('active'));
-    
+
     // Clear search input
     const searchInput = document.getElementById('searchInput');
     if (searchInput) searchInput.value = '';
-    
+
     updateActiveFiltersDisplay();
     applyFilters();
 }
@@ -272,7 +288,7 @@ async function loadProfile() {
             <div class="profile-meta">MEMBER SINCE ${createdYear}</div>
             <div class="profile-stats">
                 <div class="profile-stat">
-                    <div class="profile-stat-value">${p.balance ? p.balance.toFixed(0) : '0'}</div>
+                    <div class="profile-stat-value">${p.balance ? parseFloat(p.balance).toFixed(0) : '0'}</div>
                     <div class="profile-stat-label">MTK Balance</div>
                 </div>
                 <div class="profile-stat">
@@ -286,24 +302,14 @@ async function loadProfile() {
                 <button class="profile-action-btn danger" id="logoutBtn">LOGOUT</button>
             </div>
         `;
-        
+
         // Add logout handler
         const logoutBtn = document.getElementById('logoutBtn');
         if (logoutBtn) {
             logoutBtn.addEventListener('click', handleLogout);
         }
 
-        // Load User's NFTs (We need a new endpoint method in API for this, or reuse getProfile logic? 
-        // Wait, User.php has getUserNFTs but API endpoint for it?
-        // Ah, I didn't explicitly add a 'get_user_nfts' action in api/nft.php or api/auth.php. 
-        // Let's check api/auth.php... only 'profile'.
-        // Let's check api/nft.php... 'get_all', 'get_by_id'.
-        // I missed exposing getUserNFTs in the API. 
-        // I should fix api/nft.php to add 'get_my_nfts' or similar.
-        // For now, I will add a TODO or fix it in the next step.
-        // Actually, I can fix it right now by editing api/nft.php in the next turn or just assume it exists.
-        // I will implement the JS assuming I will fix the API.
-
+        // Load User's NFTs
         loadUserNFTs();
     } else {
         // Not logged in - redirect to homepage with login prompt
@@ -313,9 +319,6 @@ async function loadProfile() {
 }
 
 async function loadUserNFTs() {
-    // NOTE: This endpoint needs to be added to api/nft.php
-    // I will use 'get_all' for now but filter client side? No, that's bad.
-    // I will assume I add 'action=my_nfts' to api/nft.php
     const response = await fetch('api/nft.php?action=my_nfts');
     const result = await response.json();
 
@@ -411,11 +414,11 @@ function setupMintForm() {
         const royalty = document.getElementById('royalty').value;
         const price = document.getElementById('price').value;
         const imageFile = document.getElementById('image').files[0];
-        
+
         // Collect selected tags
         const tagCheckboxes = document.querySelectorAll('input[name="tags"]:checked');
         const selectedTags = Array.from(tagCheckboxes).map(cb => cb.value);
-        
+
         // Validate tags (max 5)
         if (selectedTags.length > 5) {
             alert('Please select a maximum of 5 tags');
@@ -438,7 +441,7 @@ function setupMintForm() {
             // Now list the NFT for sale
             submitBtn.textContent = 'Listing on Marketplace...';
             const listingResult = await api.createListing(result.nft_id, parseFloat(price));
-            
+
             if (listingResult.success) {
                 alert('NFT Minted and Listed Successfully!');
                 window.location.href = 'marketplace.html';
@@ -490,29 +493,29 @@ async function addToCart(listingId) {
         }
         return;
     }
-    
+
     // Get listing details
     const result = await api.getActiveListings();
     if (!result.success) {
         alert('Failed to get listing details');
         return;
     }
-    
+
     const listing = result.listings.find(l => l.listing_id == listingId);
     if (!listing) {
         alert('Listing not found');
         return;
     }
-    
+
     // Add to cart
     const cart = getCart();
-    
+
     // Check if already in cart
     if (cart.find(item => item.listing_id == listingId)) {
         alert('This item is already in your cart!');
         return;
     }
-    
+
     cart.push({
         listing_id: listing.listing_id,
         nft_id: listing.nft_id,
@@ -522,9 +525,9 @@ async function addToCart(listingId) {
         creator_username: listing.creator_username,
         royalty_percent: listing.royalty_percent || 10
     });
-    
+
     saveCart(cart);
-    
+
     // Show confirmation
     const goToCart = confirm('Added to cart! Would you like to view your cart?');
     if (goToCart) {
@@ -542,9 +545,9 @@ function removeFromCart(listingId) {
 async function loadCart() {
     const container = document.getElementById('cartItems');
     if (!container) return;
-    
+
     const cart = getCart();
-    
+
     if (cart.length === 0) {
         container.innerHTML = `
             <div class="cart-empty">
@@ -557,7 +560,7 @@ async function loadCart() {
         updateSummary(0);
         return;
     }
-    
+
     container.innerHTML = cart.map(item => `
         <div class="cart-item">
             <div class="cart-item-image" style="background-image: url('${item.image_url}')"></div>
@@ -575,7 +578,7 @@ async function loadCart() {
             </button>
         </div>
     `).join('');
-    
+
     // Calculate totals
     const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
     updateSummary(subtotal);
@@ -584,12 +587,12 @@ async function loadCart() {
 function updateSummary(subtotal) {
     const platformFee = subtotal * 0.025;
     const total = subtotal + platformFee;
-    
+
     const subtotalEl = document.getElementById('subtotal');
     const feeEl = document.getElementById('platformFee');
     const totalEl = document.getElementById('totalPrice');
     const checkoutBtn = document.getElementById('checkoutBtn');
-    
+
     if (subtotalEl) subtotalEl.textContent = `${subtotal.toFixed(2)} MTK`;
     if (feeEl) feeEl.textContent = `${platformFee.toFixed(2)} MTK`;
     if (totalEl) totalEl.textContent = `${total.toFixed(2)} MTK`;
@@ -611,7 +614,7 @@ async function checkout() {
         alert('Your cart is empty!');
         return;
     }
-    
+
     // Check if user is logged in
     const authCheck = await api.getProfile();
     if (!authCheck.success) {
@@ -621,14 +624,14 @@ async function checkout() {
         }
         return;
     }
-    
+
     const checkoutBtn = document.getElementById('checkoutBtn');
     checkoutBtn.disabled = true;
     checkoutBtn.textContent = 'Processing...';
-    
+
     let successCount = 0;
     let failedItems = [];
-    
+
     // Process each item in cart
     for (const item of cart) {
         const result = await api.buyNFT(item.listing_id);
@@ -638,16 +641,16 @@ async function checkout() {
             failedItems.push({ title: item.title, error: result.message });
         }
     }
-    
+
     // Clear successful items from cart
     if (successCount > 0) {
         // Clear cart
         saveCart([]);
     }
-    
+
     checkoutBtn.disabled = false;
     checkoutBtn.textContent = 'COMPLETE PURCHASE';
-    
+
     if (failedItems.length === 0) {
         alert(`Successfully purchased ${successCount} NFT(s)! Check your profile to see your collection.`);
         window.location.href = 'profile.html';
