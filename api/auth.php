@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . '/../classes/User.php';
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 header('Content-Type: application/json');
 
 $action = $_GET['action'] ?? '';

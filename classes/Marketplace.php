@@ -192,7 +192,7 @@ class Marketplace {
     public function getActiveListings($limit = 50, $offset = 0, $tags = '', $search = '') {
         $limit = min($limit, 100);
 
-        $sql = "SELECT l.*, n.title, n.image_url, n.royalty_percentage, n.tags,
+        $sql = "SELECT l.*, n.title, n.image_url, n.royalty_percentage, n.tags, n.description,
                 u.username as seller_username, c.username as creator_username
                 FROM listings l
                 JOIN nfts n ON l.nft_id = n.nft_id

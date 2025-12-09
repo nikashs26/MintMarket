@@ -120,6 +120,13 @@ switch ($action) {
         ]);
         break;
 
+    case 'history':
+        $nftId = (int)($_GET['nft_id'] ?? 0);
+        $blockchain = new Blockchain();
+        $history = $blockchain->getTransactionHistory($nftId);
+        echo json_encode(['success' => true, 'history' => $history]);
+        break;
+
     default:
         http_response_code(400);
         echo json_encode(['success' => false, 'message' => 'Invalid action']);

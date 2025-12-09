@@ -1,0 +1,349 @@
+2025-12-09 04:50:08 - LOAD called. UserID: 7
+ - DB Items Found: 1
+2025-12-09 04:51:07 - LOAD called. UserID: 2
+ - DB Items Found: 4
+2025-12-09 04:51:09 - LOAD called. UserID: 2
+ - DB Items Found: 4
+2025-12-09 04:51:13 - LOAD called. UserID: 2
+ - DB Items Found: 4
+2025-12-09 04:51:15 - LOAD called. UserID: 2
+ - DB Items Found: 4
+2025-12-09 04:51:17 - LOAD called. UserID: 2
+ - DB Items Found: 5
+2025-12-09 04:51:19 - LOAD called. UserID: 2
+ - DB Items Found: 5
+2025-12-09 04:53:53 - LOAD called. UserID: 2
+ - DB Items Found: 5
+2025-12-09 04:53:56 - LOAD called. UserID: 2
+ - DB Items Found: 5
+2025-12-09 04:53:59 - LOAD called. UserID: 2
+ - DB Items Found: 5
+2025-12-09 04:54:03 - LOAD called. UserID: 2
+ - DB Items Found: 5
+2025-12-09 05:05:20 - LOAD called. UserID: 2
+ - DB Items Found: 5
+2025-12-09 05:05:26 - LOAD called. UserID: 2
+ - DB Items Found: 5
+2025-12-09 05:05:30 - LOAD called. UserID: 2
+ - DB Items Found: 5
+2025-12-09 05:06:03 - LOAD called. UserID: 2
+ - DB Items Found: 5
+2025-12-09 05:06:16 - LOAD called. UserID: 2
+ - DB Items Found: 6
+2025-12-09 05:06:20 - LOAD called. UserID: 2
+ - DB Items Found: 6
+2025-12-09 05:08:16 - LOAD called. UserID: 2
+ - DB Items Found: 6
+2025-12-09 05:08:20 - LOAD called. UserID: 2
+ - DB Items Found: 6
+2025-12-09 05:08:22 - LOAD called. UserID: 2
+ - DB Items Found: 6
+2025-12-09 05:08:26 - LOAD called. UserID: 2
+ - DB Items Found: 6
+2025-12-09 05:08:28 - LOAD called. UserID: 2
+ - DB Items Found: 6
+2025-12-09 05:08:30 - LOAD called. UserID: 2
+ - DB Items Found: 7
+2025-12-09 05:08:33 - LOAD called. UserID: 2
+ - DB Items Found: 7
+2025-12-09 05:08:39 - LOAD called. UserID: 2
+ - DB Items Found: 6
+2025-12-09 05:08:40 - LOAD called. UserID: 2
+ - DB Items Found: 5
+2025-12-09 05:08:40 - LOAD called. UserID: 2
+ - DB Items Found: 4
+2025-12-09 05:08:40 - LOAD called. UserID: 2
+ - DB Items Found: 3
+2025-12-09 05:08:41 - LOAD called. UserID: 2
+ - DB Items Found: 2
+2025-12-09 05:08:42 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:08:43 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:08:46 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:08:51 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:08:53 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:09:46 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:09:47 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:09:49 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:09:49 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:09:50 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:09:50 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:09:51 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:09:54 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:12:06 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:12:07 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:12:08 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:12:08 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:12:09 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:12:09 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:12:11 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:12:12 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:12:14 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:17:14 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:17:16 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:17:19 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:17:19 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:17:25 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:17:26 - LOAD called. UserID: 2
+ - DB Items Found: 2
+2025-12-09 05:17:28 - LOAD called. UserID: 2
+ - DB Items Found: 2
+2025-12-09 05:17:30 - LOAD called. UserID: 2
+ - DB Items Found: 2
+2025-12-09 05:17:30 - LOAD called. UserID: 2
+ - DB Items Found: 2
+2025-12-09 05:18:35 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:18:37 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:18:38 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:18:41 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:18:42 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:18:42 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:19:10 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:19:14 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:19:16 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:20:09 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:20:09 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:22:27 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:22:28 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:22:30 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:22:31 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:22:33 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:22:33 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:24:33 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:24:44 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:24:46 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:24:47 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:24:47 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:29:31 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:29:38 - LOAD called. UserID: 2
+ - DB Items Found: 2
+2025-12-09 05:29:41 - LOAD called. UserID: 2
+ - DB Items Found: 2
+2025-12-09 05:29:43 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:29:47 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:29:48 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:29:49 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:29:51 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:29:54 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:29:56 - LOAD called. UserID: 2
+ - DB Items Found: 2
+2025-12-09 05:29:57 - LOAD called. UserID: 2
+ - DB Items Found: 2
+2025-12-09 05:29:59 - LOAD called. UserID: 2
+ - DB Items Found: 2
+2025-12-09 05:29:59 - LOAD called. UserID: 2
+ - DB Items Found: 2
+2025-12-09 05:30:09 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:30:16 - LOAD called. UserID: 2
+ - DB Items Found: 2
+2025-12-09 05:30:18 - LOAD called. UserID: 2
+ - DB Items Found: 2
+2025-12-09 05:30:21 - LOAD called. UserID: 2
+ - DB Items Found: 2
+2025-12-09 05:30:24 - LOAD called. UserID: 2
+ - DB Items Found: 2
+2025-12-09 05:30:29 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:30:32 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:30:32 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:30:39 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:30:43 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:31:39 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:31:40 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:31:40 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:31:42 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:31:42 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:31:57 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:32:08 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:32:16 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:32:18 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:32:19 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:32:20 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:32:21 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:32:23 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:32:23 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:32:32 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:32:34 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:32:37 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:32:38 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:32:51 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:32:51 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:32:55 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:32:55 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:33:18 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:33:19 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:33:19 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:33:22 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:33:24 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:33:25 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:34:50 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:34:52 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:34:53 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:34:55 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:34:55 - LOAD called. UserID: 2
+ - DB Items Found: 1
+2025-12-09 05:35:00 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:35:09 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:35:28 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:35:47 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:36:41 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:37:07 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:37:09 - LOAD called. UserID: 2
+ - DB Items Found: 0
+2025-12-09 05:37:17 - LOAD called. UserID: guest
+ - Guest Mode. Session Cart: Array
+(
+)
+
+2025-12-09 05:38:01 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:38:03 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:38:03 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:38:04 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:38:04 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:38:04 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:38:04 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:38:04 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:38:05 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:38:05 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:38:07 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:38:11 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:38:12 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:38:24 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:38:31 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:38:35 - LOAD called. UserID: 8
+ - DB Items Found: 1
+2025-12-09 05:38:37 - LOAD called. UserID: 8
+ - DB Items Found: 1
+2025-12-09 05:38:41 - LOAD called. UserID: 8
+ - DB Items Found: 1
+2025-12-09 05:38:41 - LOAD called. UserID: 8
+ - DB Items Found: 1
+2025-12-09 05:39:31 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:39:33 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:39:44 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:41:34 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:41:38 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:41:40 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:41:41 - LOAD called. UserID: 8
+ - DB Items Found: 0
+2025-12-09 05:41:42 - LOAD called. UserID: 8
+ - DB Items Found: 0

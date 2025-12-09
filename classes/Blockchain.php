@@ -196,5 +196,23 @@ class Blockchain {
         $result = $stmt->fetch();
         return $result ? ['hash' => $result['block_hash'], 'block_number' => $result['transaction_id']] : null;
     }
+    /**
+     * Get transaction history for an NFT
+     * 
+     * @param int $nftId
+     * @return array
+     */
+    public function getTransactionHistory($nftId) {
+        $sql = "SELECT t.*, u_from.username as from_username, u_to.username as to_username
+                FROM transactions t
+                LEFT JOIN users u_from ON t.from_user_id = u_from.user_id
+                JOIN users u_to ON t.to_user_id = u_to.user_id
+                WHERE t.nft_id = ?
+                ORDER BY t.timestamp DESC";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$nftId]);
+        return $stmt->fetchAll();
+    }
 }
 ?>
