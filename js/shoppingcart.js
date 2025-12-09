@@ -181,7 +181,8 @@ function checkoutEntireCart(cart_ID) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    loadingItemsToCart(); //with page refresh, load cart
+    // Small delay to ensure session/DB is ready (addresses user's "loads too fast" concern)
+    setTimeout(loadingItemsToCart, 500);
 });
 
 //payment popup

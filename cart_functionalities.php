@@ -215,7 +215,7 @@ switch($action){
                     SELECT l.listing_id, l.price, n.title as name, n.image_url as image, n.royalty_percentage, c.username as creator_username
                     FROM listings l
                     JOIN nfts n ON l.nft_id = n.nft_id
-                    JOIN users c ON n.creator_id = c.user_id
+                    LEFT JOIN users c ON n.creator_id = c.user_id
                     WHERE l.listing_id IN ($placeholders)
                 ";
                 
@@ -241,7 +241,7 @@ switch($action){
                             $imgUrl = htmlspecialchars($product['image']);
                             $name = htmlspecialchars($product['name']);
                             $price = number_format($product['price'], 2);
-                            $creator = htmlspecialchars($product['creator_username']);
+                            $creator = htmlspecialchars($product['creator_username'] ?? 'Unknown Artist');
                             $royalty = number_format($product['royalty_percentage'], 0); // e.g. 10
                             
                             // Legacy Design Match
