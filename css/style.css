@@ -394,12 +394,13 @@ main.hero-section {
 }
 
 .purpose-card p {
-    margin: 0;
+    margin: 0 auto;
     font-size: var(--font-size-body);
     line-height: 1.7;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--color-text-main);
+    max-width: none;
 }
 
 .cta-button {
