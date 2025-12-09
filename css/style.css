@@ -1825,3 +1825,97 @@ main.hero-section {
         font-size: 0.75rem;
     }
 }
+/*Popup for card payments*/
+.payment-popup{
+    top: 0;
+    right:0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    overflow: auto;
+    z-index: 9999;
+    display: none;
+    justify-content: flex-end;
+}
+
+.payment-popup-content{
+    top: 0;
+    right: 0;
+    width: 40%;
+    min-width: 320px;
+    height: 100%;
+    background: #1a1a2e;
+    padding: 30px;
+    box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+    gap: 20px;
+    display: flex;
+    color: white;
+    flex-direction: column;
+}
+
+.payment-popup-content h2{
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 1.8rem;
+}
+
+.payment-popup-content input{
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #2d3748;
+    color: white;
+}
+
+.payment-popup-content .form-group input::placeholder{
+    color: rgba(255,255,255,0.6);
+}
+
+.payment-popup.active{
+    display: flex;
+}
+
+.payment-popup.active .payment-popup-content{
+    transform: translateX(0);
+}
+
+.payment-popup .form-group{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.payment-popup button{
+    padding: 16px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #2d3748 100%);
+    border: none;
+    border-radius: 12px;
+    font-weight: 800;
+    color: white;
+    text-transform: uppercase; 
+    cursor: pointer;
+}
+
+.payment-popup-content button:hover{
+    background: linear-gradient(135deg, #2d3748 0%, #1a1a2e 100%);
+    transform: translateY(-2px);
+}
+
+.payment-popup .continue-shopping:hover{
+    color: #1e90ff;
+}
+
+.payment-popup .continue-shopping{
+    color: var(--color-sky-blue);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: left;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 768px){
+    .payment-popup-content{ 
+        width: 100%;
+    }
+}
