@@ -9,9 +9,9 @@
   }
 
   function initCarousel() {
-    var slides = document.querySelectorAll('.slide');
-    var dots = document.querySelectorAll('.page-footer__dots .dot');
-    
+    var slides = document.querySelectorAll('.carousel-slide');
+    var dots = document.querySelectorAll('.carousel-dots .dot');
+
     if (!slides.length || !dots.length) {
       console.warn('Slider: Missing slides or dots');
       return;
@@ -31,12 +31,12 @@
 
       // Hide all slides first
       for (var i = 0; i < slides.length; i++) {
-        slides[i].classList.remove('slide--active');
+        slides[i].classList.remove('active');
       }
 
       // Show only the active slide
       if (slides[index]) {
-        slides[index].classList.add('slide--active');
+        slides[index].classList.add('active');
         var title = slides[index].querySelector('.gallery__title');
         if (title) {
           console.log('Showing slide', index, ':', title.textContent.trim());

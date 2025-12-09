@@ -9,60 +9,104 @@
 //update quantity of item 
 //update add item
 
-function loadingItemsToCart(){
+function loadingItemsToCart() {
     const xhttp = new XMLHttpRequest(); //making ajax request to smoothly update div in cart w/out updating whole page
-    xhttp.onload = function() {
-        const response = JSON.parse(this.responseText); //json response parsed
-        
-        document.getElementById("itemsInCart").innerHTML = response.HTMLitems; //update cart from php w/ html
-        updatedOrdSum(response.subtotal, response.fee, response.total); //order summary is updated
+    xhttp.onload = function () {
+        try {
+            const response = JSON.parse(this.responseText); //json response parsed
 
-        const cartIcon = document.getElementById("cartNavIcon"); //updates bag icon in nav bar
-        if (response.totalItemCount > 0) {
-            cartIcon.style.display = "incline";
-            cartIcon.innerText = response.totalItems;
-        }else{
-            cartIcon.style.display = "none";
+            // Attempt to update all possible cart containers found on the page
+            const containerIDs = ["itemsInCart", "cartItems", "orderItems"];
+
+            containerIDs.forEach(id => {
+                const container = document.getElementById(id);
+                if (container) {
+                    // Check if response.itemsInCart exists (from PHP change) or use HTMLitems
+                    const htmlContent = response.HTMLitems || response.itemsInCart;
+                    if (htmlContent) {
+                        container.innerHTML = htmlContent;
+                    }
+                }
+            });
+
+            // Only update summary if elements exist
+            if (document.getElementById("subtotal")) {
+                updatedOrdSum(response.subtotal, response.fee, response.total); //order summary is updated
+            }
+
+            const cartIcon = document.getElementById("cartNavIcon"); //updates bag icon in nav bar
+            if (cartIcon && response.totalItemCount !== undefined) {
+                if (response.totalItemCount > 0) {
+                    cartIcon.style.display = "inline";
+                    cartIcon.innerText = response.totalItemCount;
+                } else {
+                    cartIcon.style.display = "none";
+                }
+            }
+        } catch (e) {
+            console.error("Error parsing cart JSON", e);
         }
-    
     };
+
     xhttp.open("GET", "cart_functionalities.php?action=load");
     xhttp.send();
-    
 }
 
-function updatedOrdSum(subtotal, fee, total){
-    document.getElementById("subtotal").innerText = subtotal.toFixed(2) + " MTK";
-    document.getElementById("platformFee").innerText = fee.toFixed(2) + " MTK";
-    document.getElementById("ordertotal").innerText = total.toFixed(2) + " MTK";
+function updatedOrdSum(subtotal, fee, total) {
+    const subEl = document.getElementById("subtotal");
+    const feeEl = document.getElementById("platformFee");
+    const totalEl = document.getElementById("totalPrice"); // Fixed ID
 
+    if (subEl) subEl.innerText = subtotal.toFixed(2) + " MTK";
+    if (feeEl) feeEl.innerText = fee.toFixed(2) + " MTK";
+    if (totalEl) totalEl.innerText = total.toFixed(2) + " MTK";
 }
 
-function addingToCart(product_ID){
+function addingToCart(product_ID) {
     const xhttp = new XMLHttpRequest();
-    xhttp.onload = function() {
+    xhttp.onload = function () {
+        try {
+            const response = JSON.parse(this.responseText);
+            if (response.status === 'exists') {
+                showCartSuccessModal(response.message);
+            } else if (response.status === 'own_item') {
+                showCartSuccessModal(response.message);
+            } else if (response.status === 'success') {
+                loadingItemsToCart();
+                showCartSuccessModal("Added to Cart!");
+            } else {
+                loadingItemsToCart();
+            }
+        } catch (e) {
+            console.warn("Legacy response or error", e);
+            loadingItemsToCart();
+        }
+    };
+    xhttp.open("POST", "cart_functionalities.php");
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("action=add&product_ID=" + product_ID + "&quantity=1");
+}
+
+function updatingItemQuantity(cart_ID, quantity) {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function () {
         loadingItemsToCart();
     };
     xhttp.open("POST", "cart_functionalities.php");
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send("action=add&product_ID=" + product_ID + "&quantity=1"); //adds the product, product id, and quantity initialized to 1
-
+    xhttp.send("action=update&cart_ID=" + cart_ID + "&quantity=" + quantity);
 }
 
-function updatingItemQuantity(cart_ID, quantity){
-    const xhttp = new XMLHttpRequest();
-    xhttp.onload = function() {
+// Automatically load cart items when the page finishes loading
+document.addEventListener('DOMContentLoaded', function () {
+    if (document.getElementById('itemsInCart')) {
         loadingItemsToCart();
-    };
-    xhttp.open("POST", "cart_functionalities.php");
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send("action=update&cart_ID=" + cart_ID + "&quantity=" + quantity); //adds the product, cart id (different from original quantity initialization for item), and new quantity
+    }
+});
 
-}
-
-function deletingItemFromCart(cart_ID){
+function deletingItemFromCart(cart_ID) {
     const xhttp = new XMLHttpRequest();
-    xhttp.onload = function() {
+    xhttp.onload = function () {
         loadingItemsToCart();
     };
     xhttp.open("POST", "cart_functionalities.php");
@@ -71,11 +115,21 @@ function deletingItemFromCart(cart_ID){
 
 }
 
-function checkoutSingleItem(cart_ID){
+function checkoutSingleItem(cart_ID) {
     const xhttp = new XMLHttpRequest();
-    xhttp.onload = function() {
-        loadingItemsToCart();
-        alert("Order Completed!");
+    xhttp.onload = function () {
+        try {
+            const response = JSON.parse(this.responseText);
+            loadingItemsToCart();
+            if (response.status === 'success') {
+                alert("Order Completed! " + response.message);
+            } else {
+                alert("Order failed: " + response.message);
+            }
+        } catch (e) {
+            console.error("JSON parse error", e);
+            alert("Order failed: Unknown error");
+        }
     };
     xhttp.open("POST", "cart_functionalities.php");
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -83,20 +137,52 @@ function checkoutSingleItem(cart_ID){
 
 }
 
-function checkoutEntireCart(cart_ID){
+
+
+// New Success Modal Logic
+function showCartSuccessModal(msg = 'Items added to cart!') {
+    const modal = document.getElementById('cartSuccessModal');
+    if (modal) {
+        // Update message text if possible (assuming simple structure, checking for p tag or inserting text)
+        // If modal structure is strict, we might need to find the specific text element.
+        // Based on previous edits, let's try to set the text of the message container if it exists, or just use alert fallback if complex.
+        const msgContainer = modal.querySelector('.modal-message') || modal.querySelector('p') || modal;
+        if (msgContainer) msgContainer.textContent = msg;
+
+        modal.classList.add('active');
+        setTimeout(() => {
+            modal.classList.remove('active');
+        }, 3000); // Hide after 3 seconds
+    } else {
+        alert(msg);
+    }
+}
+
+function checkoutEntireCart(cart_ID) {
     const xhttp = new XMLHttpRequest();
-    xhttp.onload = function() {
-        loadingItemsToCart();
-        alert("Order Completed!");
+    xhttp.onload = function () {
+        try {
+            const response = JSON.parse(this.responseText);
+            loadingItemsToCart();
+            if (response.status === 'success') {
+                alert("Order Completed! " + response.message);
+            } else {
+                alert("Order failed: " + response.message);
+            }
+        } catch (e) {
+            console.error("JSON parse error", e);
+            alert("Order failed: Unknown error");
+        }
     };
     xhttp.open("POST", "cart_functionalities.php");
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("action=checkoutEntireCart"); // completing purchase for all items
-    
+
 }
 
-document.addEventListener('DOMContentLoaded', function(){
-    loadingItemsToCart(); //with page refresh, load cart
+document.addEventListener('DOMContentLoaded', function () {
+    // Small delay to ensure session/DB is ready (addresses user's "loads too fast" concern)
+    setTimeout(loadingItemsToCart, 500);
 });
 
 //payment popup
@@ -108,44 +194,54 @@ let checkoutMode = 'cart';
 let checkoutCart_ID = null;
 
 //when checkout button is clicked, popup is revealed
-function showPaymentPopup(mode, cart_ID = null){
-    checkoutMode = mode;4
-    checkoutCart_ID = cart_ID;
-    paymentPopUp.classList.add('active');
-    
+function showPaymentPopup(mode, cart_ID = null) {
+    window.location.href = 'checkout.html';
 }
 
 //hide popup
-function hidePayPopup(){
-    if(!paymentPopUp){return;}
+function hidePayPopup() {
+    if (!paymentPopUp) { return; }
     paymentPopUp.classList.remove('active');
 }
 
 //processing payment
 
-function paymentProcessing(){
+function paymentProcessing() {
     const cardNum = document.querySelector('#paymentPopup input[placeholder="1234 5678 9012 3456"]').value;
     const expiryDate = document.querySelector('#paymentPopup input[placeholder="MM/YY"]').value;
     const cvv = document.querySelector('#paymentPopup input[placeholder="123"]').value;
 
-    if(!cardNum || !expiryDate || !cvv){
+    if (!cardNum || !expiryDate || !cvv) {
         alert("Enter all card info details!");
         return;
     }
-    if(checkoutMode == 'cart'){
+    if (checkoutMode == 'cart') {
         checkoutEntireCart();
-    }else{
+    } else {
         checkoutSingleItem(checkoutCart_ID);
     }
     hidePayPopup();
-    alert('Payment Completed!');
+    // alert('Payment Completed!'); // Removed premature alert. Reliance on AJAX callback.
 }
 
 //closes popup when clicked elsewhere on page
-paymentPopUp.addEventListener('click', function(e) {
-    if(e.target === this) {
-        hidePayPopup();
-    }
-});
+//closes popup when clicked elsewhere on page
+if (paymentPopUp) {
+    paymentPopUp.addEventListener('click', function (e) {
+        if (e.target === this) {
+            hidePayPopup();
+        }
+    });
+}
 
 
+// Make global
+window.loadingItemsToCart = loadingItemsToCart;
+window.addingToCart = addingToCart;
+window.updatingItemQuantity = updatingItemQuantity;
+window.deletingItemFromCart = deletingItemFromCart;
+window.checkoutSingleItem = checkoutSingleItem;
+window.checkoutEntireCart = checkoutEntireCart;
+window.showPaymentPopup = showPaymentPopup;
+window.hidePayPopup = hidePayPopup;
+window.paymentProcessing = paymentProcessing;

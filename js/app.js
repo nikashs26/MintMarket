@@ -119,13 +119,13 @@ async function loadMarketplace(tags = '', search = '') {
 
             return `
             <div class="nft-card">
-                <div class="nft-image" style="background-image: url('${listing.image_url}')">
+                <div class="nft-image" style="background-image: url('${listing.image_url}')" onclick='openNFTDetails(${JSON.stringify(listing)})'>
                     <div class="nft-tags">
                         ${tagBadges || '<span class="nft-tag">NFT</span>'}
                     </div>
                 </div>
                 <div class="nft-info">
-                    <h3>${listing.title}</h3>
+                    <h3 onclick='openNFTDetails(${JSON.stringify(listing)})' style="cursor: pointer;">${listing.title}</h3>
                     <p class="creator">${listing.creator_username}</p>
                     <div class="price-box">
                         <span class="price-label">Current Price</span>
@@ -133,7 +133,7 @@ async function loadMarketplace(tags = '', search = '') {
                     </div>
                     <div class="nft-actions">
                         <button onclick="buyNFT(${listing.listing_id})" class="btn-buy">BUY NOW</button>
-                        <button onclick="addToCart(${listing.listing_id})" class="btn-secondary">ADD TO CART</button>
+                        <button onclick="addingToCart(${listing.listing_id})" class="btn-secondary">ADD CART</button>
                     </div>
                 </div>
             </div>
@@ -249,22 +249,107 @@ async function buyNFT(listingId) {
         const shouldLogin = confirm('You need to log in to purchase NFTs. Would you like to log in now?');
         if (shouldLogin) {
             window.location.href = 'index.html#login';
-            return;
         }
         return;
     }
 
-    if (!confirm('Are you sure you want to purchase this NFT?')) return;
+    // Redirect to new checkout page
+    window.location.href = 'checkout.html?listing_id=' + listingId;
+}
 
-    const result = await api.buyNFT(listingId);
-    if (result.success) {
-        alert(`Purchase successful! Transaction Hash: ${result.transaction_hash.substring(0, 10)}...`);
-        loadMarketplace(); // Refresh
-        checkAuthStatus(); // Update balance
-    } else {
-        alert('Purchase failed: ' + result.message);
+
+// --- Modal Logic ---
+
+async function openNFTDetails(listing) {
+    const modal = document.getElementById('nftDetailModal');
+    if (!modal) return;
+
+    // Populate Basic Info
+    document.getElementById('modalImage').src = listing.image_url;
+    document.getElementById('modalTitle').textContent = listing.title;
+    document.getElementById('modalCreator').textContent = listing.creator_username;
+
+    // Tags Logic - Handle string or array
+    let tagsList = [];
+    if (listing.tags_array && Array.isArray(listing.tags_array)) {
+        tagsList = listing.tags_array;
+    } else if (listing.tags && typeof listing.tags === 'string') {
+        tagsList = listing.tags.split(',').map(t => t.trim()).filter(t => t);
+    }
+
+    const tagsHtml = tagsList.map(tag => `<span class="nft-tag">${tag}</span>`).join('');
+
+    // Insert Tags below title/creator (using a new container or appending)
+    // We'll update the logic to insert into a specific container we'll create in HTML or append to info header
+    const infoHeader = document.querySelector('.modal-info-header');
+    // Remove old tags if any
+    const oldTags = infoHeader.querySelector('.modal-tags-inline');
+    if (oldTags) oldTags.remove();
+
+    if (tagsList.length > 0) {
+        const tagContainer = document.createElement('div');
+        tagContainer.className = 'modal-tags-inline';
+        tagContainer.style.marginTop = '12px';
+        tagContainer.style.display = 'flex';
+        tagContainer.style.gap = '8px';
+        tagContainer.style.flexWrap = 'wrap';
+        tagContainer.innerHTML = tagsHtml;
+        infoHeader.appendChild(tagContainer);
+    }
+
+    document.getElementById('modalPrice').textContent = parseFloat(listing.price).toFixed(2) + ' MTK';
+    document.getElementById('modalDescription').textContent = listing.description || 'No description provided.';
+
+    // Tags - Cleared from bottom location since moved
+    document.getElementById('modalTags').innerHTML = '';
+
+    // Buttons
+    const buyBtn = document.getElementById('modalBuyBtn');
+    const cartBtn = document.getElementById('modalCartBtn');
+
+    buyBtn.onclick = () => buyNFT(listing.listing_id);
+    cartBtn.onclick = () => addToCart(listing.listing_id);
+
+    // Fetch History
+    document.getElementById('modalLastSale').textContent = 'Loading...';
+    try {
+        const response = await fetch(`api/nft.php?action=history&nft_id=${listing.nft_id}`);
+        const data = await response.json();
+
+        if (data.success && data.history.length > 0) {
+            // Find last SALE
+            const lastSale = data.history.find(h => h.transaction_type === 'sale');
+            if (lastSale) {
+                document.getElementById('modalLastSale').textContent = parseFloat(lastSale.amount).toFixed(2) + ' MTK';
+            } else {
+                document.getElementById('modalLastSale').textContent = 'No past transactions';
+            }
+        } else {
+            document.getElementById('modalLastSale').textContent = 'No past transactions';
+        }
+    } catch (e) {
+        document.getElementById('modalLastSale').textContent = '-';
+    }
+
+    modal.style.display = 'flex';
+}
+
+function closeNFTDetails() {
+    const modal = document.getElementById('nftDetailModal');
+    if (modal) modal.style.display = 'none';
+}
+
+// Close on click outside
+window.onclick = function (event) {
+    const modal = document.getElementById('nftDetailModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
     }
 }
+
+// Expose
+window.openNFTDetails = openNFTDetails;
+window.closeNFTDetails = closeNFTDetails;
 
 // --- Profile Page ---
 
@@ -343,7 +428,7 @@ async function loadUserNFTs() {
                 </div>
                 <div class="nft-info">
                     <h3>${nft.title}</h3>
-                    <p class="creator">Created by you</p>
+                    <p class="creator">Created by ${nft.creator_id == nft.current_owner_id ? 'you' : (nft.creator_username || 'Artist')}</p>
                     <div class="nft-actions">
                         ${nft.is_listed
                 ? '<button class="btn-secondary" disabled style="opacity: 0.7;">ON SALE</button>'
@@ -483,55 +568,11 @@ function updateCartBadge() {
 }
 
 async function addToCart(listingId) {
-    // Check if user is logged in
-    const authCheck = await api.getProfile();
-    if (!authCheck.success) {
-        const shouldLogin = confirm('You need to log in to add items to cart. Would you like to log in now?');
-        if (shouldLogin) {
-            window.location.href = 'index.html#login';
-            return;
-        }
-        return;
-    }
-
-    // Get listing details
-    const result = await api.getActiveListings();
-    if (!result.success) {
-        alert('Failed to get listing details');
-        return;
-    }
-
-    const listing = result.listings.find(l => l.listing_id == listingId);
-    if (!listing) {
-        alert('Listing not found');
-        return;
-    }
-
-    // Add to cart
-    const cart = getCart();
-
-    // Check if already in cart
-    if (cart.find(item => item.listing_id == listingId)) {
-        alert('This item is already in your cart!');
-        return;
-    }
-
-    cart.push({
-        listing_id: listing.listing_id,
-        nft_id: listing.nft_id,
-        title: listing.title,
-        image_url: listing.image_url,
-        price: parseFloat(listing.price),
-        creator_username: listing.creator_username,
-        royalty_percent: listing.royalty_percent || 10
-    });
-
-    saveCart(cart);
-
-    // Show confirmation
-    const goToCart = confirm('Added to cart! Would you like to view your cart?');
-    if (goToCart) {
-        window.location.href = 'cart.html';
+    if (window.addingToCart) {
+        window.addingToCart(listingId);
+    } else {
+        console.error('shoppingcart.js not loaded, falling back to basic flow');
+        alert('Item added to cart (refresh to view)');
     }
 }
 
@@ -596,16 +637,16 @@ function updateSummary(subtotal) {
     if (subtotalEl) subtotalEl.textContent = `${subtotal.toFixed(2)} MTK`;
     if (feeEl) feeEl.textContent = `${platformFee.toFixed(2)} MTK`;
     if (totalEl) totalEl.textContent = `${total.toFixed(2)} MTK`;
-    if (checkoutBtn) {
-        checkoutBtn.disabled = subtotal === 0;
-        if (subtotal === 0) {
-            checkoutBtn.style.opacity = '0.5';
-            checkoutBtn.style.cursor = 'not-allowed';
-        } else {
-            checkoutBtn.style.opacity = '1';
-            checkoutBtn.style.cursor = 'pointer';
-        }
-    }
+    // if (checkoutBtn) {
+    //     checkoutBtn.disabled = subtotal === 0;
+    //     if (subtotal === 0) {
+    //         checkoutBtn.style.opacity = '0.5';
+    //         checkoutBtn.style.cursor = 'not-allowed';
+    //     } else {
+    //         checkoutBtn.style.opacity = '1';
+    //         checkoutBtn.style.cursor = 'pointer';
+    //     }
+    // }
 }
 
 async function checkout() {
@@ -669,3 +710,48 @@ window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
 window.loadCart = loadCart;
 window.checkout = checkout;
+
+// Login Handler with Inline Errors
+window.login = async function () {
+    const usernameInput = document.getElementById('loginUsername');
+    const passwordInput = document.getElementById('loginPassword');
+
+    // Clear previous errors
+    document.querySelectorAll('.input-error-msg').forEach(el => el.remove());
+    document.querySelectorAll('.form-group input').forEach(el => el.style.borderColor = '');
+
+    const username = usernameInput.value;
+    const password = passwordInput.value;
+
+    if (!username || !password) {
+        showLoginError('Please fill in all fields.');
+        return;
+    }
+
+    try {
+        const result = await api.login(username, password);
+        if (result.success) {
+            window.location.reload();
+        } else {
+            // Show inline error specifically under password or general
+            showLoginError(result.message || 'Invalid username or password.');
+            passwordInput.style.borderColor = '#ef4444';
+        }
+    } catch (e) {
+        showLoginError('An error occurred. Please try again.');
+    }
+}
+
+function showLoginError(msg) {
+    const form = document.getElementById('loginForm');
+    // Create error message
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'input-error-msg';
+    errorDiv.textContent = msg;
+
+    // Insert after password field container
+    const pwGroup = document.getElementById('loginPassword').closest('.form-group');
+    if (pwGroup) {
+        pwGroup.appendChild(errorDiv);
+    }
+}

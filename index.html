@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,8 @@
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body>
+
+<body class="home-body">
     <nav class="navbar">
         <div class="container">
             <a href="index.html" class="logo">MintMarket</a>
@@ -29,25 +31,28 @@
     </nav>
 
     <main class="hero-section">
-        <div class="hero-background"></div>
+
         <div class="hero-content">
             <div class="purpose-card">
                 <h2>PURPOSE</h2>
-                <p>WE BRING YOU THE FUTURE OF DIGITAL ART OWNERSHIP. BUY, SELL, AND TRADE UNIQUE DIGITAL COLLECTIBLES ON A SECURE BLOCKCHAIN-POWERED MARKETPLACE. EVERY NFT SUPPORTS ARTISTS WITH AUTOMATIC ROYALTIES, ENSURING CREATORS EARN FROM EVERY RESALE.</p>
+                <p>WE BRING YOU THE FUTURE OF DIGITAL ART OWNERSHIP. BUY, SELL, AND TRADE UNIQUE DIGITAL COLLECTIBLES ON
+                    A SECURE BLOCKCHAIN-POWERED MARKETPLACE. EVERY NFT SUPPORTS ARTISTS WITH AUTOMATIC ROYALTIES,
+                    ENSURING CREATORS EARN FROM EVERY RESALE.</p>
             </div>
             <a href="marketplace.html" class="cta-button">HOP INTO THE MARKETPLACE!</a>
         </div>
-        
+
         <!-- Auth Overlay (blur background) -->
         <div class="auth-overlay" id="authOverlay"></div>
-        
+
         <!-- Auth Forms (shown by default when not logged in) -->
         <div class="auth-container" id="authContainer" style="display: none;">
             <!-- Login Form -->
             <form id="loginForm" class="auth-form">
                 <button type="button" class="close-btn" onclick="hideAuth()">&times;</button>
                 <h2>WELCOME BACK</h2>
-                <p style="text-align: center; margin-bottom: 1.5rem; color: var(--color-text-main); opacity: 0.9;">Please enter your details</p>
+                <p style="text-align: center; margin-bottom: 1.5rem; color: var(--color-text-main); opacity: 0.9;">
+                    Please enter your details</p>
                 <div class="form-group">
                     <label>USERNAME OR EMAIL</label>
                     <input type="text" id="loginUsername" required>
@@ -59,10 +64,14 @@
                 <button type="submit" class="btn-primary full-width">SIGN IN</button>
                 <button type="button" class="btn-google full-width" onclick="showGoogleSignIn()">
                     <svg width="18" height="18" viewBox="0 0 24 24" style="margin-right: 10px;">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        <path fill="#4285F4"
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path fill="#34A853"
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path fill="#FBBC05"
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                        <path fill="#EA4335"
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                     </svg>
                     SIGN IN WITH GOOGLE
                 </button>
@@ -89,7 +98,7 @@
                 <p class="switch-auth">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
             </form>
         </div>
-        
+
         <!--<div class="hero-art-meta">
             <div>
                 <div class="hero-art-title">DIVINE GOD</div>
@@ -97,8 +106,9 @@
             </div>
         </div>-->
 
-        <div class = "carousel-wrap">
-            <div class="carousel-slide active" hero-art-collection="Divine Collection" hero-art-title="Divine God" hero-art-author="Soul">
+        <div class="carousel-wrap">
+            <div class="carousel-slide active" hero-art-collection="Divine Collection" hero-art-title="Divine God"
+                hero-art-author="Soul">
                 <img src="images/divine.png" alt"Divine Collection">
                 <div class="carousel-collection">Divine Collection</div>
                 <div class="carousel-info-top">
@@ -106,7 +116,8 @@
                     <p class="carousel-author"> By: Soul</p>
                 </div>
             </div>
-            <div class="carousel-slide" hero-art-collection="Pudgy Penguins Collection" hero-art-title="Pudgy Penguin #5323" hero-art-author="0x732db9da8806ff6c988bd1ff808cceb11fecda44">
+            <div class="carousel-slide" hero-art-collection="Pudgy Penguins Collection"
+                hero-art-title="Pudgy Penguin #5323" hero-art-author="0x732db9da8806ff6c988bd1ff808cceb11fecda44">
                 <img src="images/pudgypenguins.jpeg" alt"Pudgy Penguins">
                 <div class="carousel-collection">Pudgy Penguins</div>
                 <div class="carousel-info-top">
@@ -114,7 +125,8 @@
                     <p class="carousel-author"> By: 0x732db9da8806ff6c988bd1ff808cceb11fecda44</p>
                 </div>
             </div>
-            <div class="carousel-slide" hero-art-collection="Bad Egg Co Collection" hero-art-title="Bad Eggs #22" hero-art-author="NFTButlerBotFather">
+            <div class="carousel-slide" hero-art-collection="Bad Egg Co Collection" hero-art-title="Bad Eggs #22"
+                hero-art-author="NFTButlerBotFather">
                 <img src="images/badegg.jpeg" alt"Bad Eggs Co.">
                 <div class="carousel-collection">Bad Egg Co Collection</div>
                 <div class="carousel-info-top">
@@ -122,7 +134,8 @@
                     <p class="carousel-author"> By: NFTButlerBotFather</p>
                 </div>
             </div>
-            <div class="carousel-slide" hero-art-collection="Bored Ape Yacht Club Collection" hero-art-title="#8934" hero-art-author="8392">
+            <div class="carousel-slide" hero-art-collection="Bored Ape Yacht Club Collection" hero-art-title="#8934"
+                hero-art-author="8392">
                 <img src="images/boredapeyachtclub.jpeg" alt"Bored Ape Yacht Club Collection">
                 <div class="carousel-collection">Bored Ape Yacht Club Collection</div>
                 <div class="carousel-info-top">
@@ -130,7 +143,8 @@
                     <p class="carousel-author"> By: 9392</p>
                 </div>
             </div>
-            <div class="carousel-slide" hero-art-collection="CrytpoPunks Collection" hero-art-title="CryptoPunk #8565" hero-art-author="0xd56cc099bc642644e0e9e1781629b5629fbb19fc">
+            <div class="carousel-slide" hero-art-collection="CrytpoPunks Collection" hero-art-title="CryptoPunk #8565"
+                hero-art-author="0xd56cc099bc642644e0e9e1781629b5629fbb19fc">
                 <img src="images/cryptopunks.jpeg" alt"CrytpoPunks Collection">
                 <div class="carousel-collection">CrytpoPunks Collection</div>
                 <div class="carousel-info-top">
@@ -138,7 +152,8 @@
                     <p class="carousel-author"> By: 0xd56cc099bc642644e0e9e1781629b5629fbb19fc</p>
                 </div>
             </div>
-            <div class="carousel-slide" hero-art-collection="Fwogs Collection" hero-art-title="Fwog #3306" hero-art-author="weldlgriya">
+            <div class="carousel-slide" hero-art-collection="Fwogs Collection" hero-art-title="Fwog #3306"
+                hero-art-author="weldlgriya">
                 <img src="images/fwogs.jpeg" alt"Fwogs Collection">
                 <div class="carousel-collection">Fwogs Collection</div>
                 <div class="carousel-info-top">
@@ -146,7 +161,8 @@
                     <p class="carousel-author"> By: weldlgriya</p>
                 </div>
             </div>
-            <div class="carousel-slide" hero-art-collection="Hypurr Collection" hero-art-title="Hypurr #1543" hero-art-author="0x84aed674691abdc20c66cff5e93fd9d7a7a917e2">
+            <div class="carousel-slide" hero-art-collection="Hypurr Collection" hero-art-title="Hypurr #1543"
+                hero-art-author="0x84aed674691abdc20c66cff5e93fd9d7a7a917e2">
                 <img src="images/hypurr.jpeg" alt"Hypurr Collection">
                 <div class="carousel-collection">Hypurr Collection</div>
                 <div class="carousel-info-top">
@@ -154,7 +170,8 @@
                     <p class="carousel-author"> By: 0x84aed674691abdc20c66cff5e93fd9d7a7a917e2</p>
                 </div>
             </div>
-            <div class="carousel-slide" hero-art-collection="Rise of the Hybrids Collection" hero-art-title="Sky Guardians" hero-art-author="0x7e2c835fce2e0e2df46354a579d1ad6a37a36f3a">
+            <div class="carousel-slide" hero-art-collection="Rise of the Hybrids Collection"
+                hero-art-title="Sky Guardians" hero-art-author="0x7e2c835fce2e0e2df46354a579d1ad6a37a36f3a">
                 <img src="images/riseofthehybrids.jpeg" alt"Rise of the Hybrids Collection">
                 <div class="carousel-collection">Rise of the Hybrids Collection</div>
                 <div class="carousel-info-top">
@@ -164,7 +181,7 @@
             </div>
 
         </div>
-        
+
         <!-- Carousel dots -->
         <div class="carousel-dots">
             <div class="dot dot--active" data-slide-num="0"></div>
@@ -179,28 +196,21 @@
     </main>
 
     <footer class="page-footer">
-        <div class="page-footer__top">
-            <div class="page-footer__dots">
-                <div class="dot dot--active"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-        </div>
+
         <div class="page-footer__bottom">
-            <div class="footer-left">© NAME</div>
+            <div class="footer-left">© MintMarket 2025</div>
             <div class="footer-center"><a class="footer-link" href="contact.html">CONTACT US</a></div>
             <div class="footer-right"></div>
         </div>
     </footer>
 
+    <div id="cartSuccessModal" class="success-modal">
+        Congratulations, you added it to cart!
+    </div>
     <script src="js/api.js"></script>
     <script src="js/app.js"></script>
     <script src="js/shoppingcart.js"></script>
+    <script src="scripts.js"></script>
     <script>
         // Auth UI Toggles (api is already defined in app.js)
         function showLogin() {
@@ -215,7 +225,7 @@
                 if (registerForm) registerForm.style.display = 'none';
             }
         }
-        
+
         function showRegister() {
             const authContainer = document.getElementById('authContainer');
             const authOverlay = document.getElementById('authOverlay');
@@ -228,19 +238,19 @@
                 if (registerForm) registerForm.style.display = 'block';
             }
         }
-        
+
         function hideAuth() {
             const authContainer = document.getElementById('authContainer');
             const authOverlay = document.getElementById('authOverlay');
             if (authContainer) authContainer.style.display = 'none';
             if (authOverlay) authOverlay.classList.remove('active');
         }
-        
+
         // Make functions available globally
         window.showLogin = showLogin;
         window.showRegister = showRegister;
         window.hideAuth = hideAuth;
-        
+
         // Close auth form when clicking overlay
         document.getElementById('authOverlay').addEventListener('click', hideAuth);
 
@@ -270,12 +280,12 @@
                 alert(res.message);
             }
         });
-        
+
         // Check auth status on load
         document.addEventListener('DOMContentLoaded', async () => {
             const result = await api.getProfile();
             updateNav(result.success, result.profile);
-            
+
             // After auth check, show login form if hash is #login
             if (!result.success && window.location.hash === '#login') {
                 showLogin();
@@ -283,7 +293,7 @@
                 showRegister();
             }
         });
-        
+
         function updateNav(isLoggedIn, user = null) {
             const authLinks = document.getElementById('authLinks');
             const userLinks = document.getElementById('userLinks');
@@ -302,19 +312,20 @@
                 if (userLinks) userLinks.style.display = 'none';
             }
         }
-        
+
         // Check hash on load and show login if needed
-        window.addEventListener('hashchange', function() {
+        window.addEventListener('hashchange', function () {
             if (window.location.hash === '#login') {
                 showLogin();
             } else if (window.location.hash === '#register') {
                 showRegister();
             }
         });
-        
+
         function showGoogleSignIn() {
             alert('Google Sign In functionality coming soon!');
         }
     </script>
 </body>
+
 </html>
