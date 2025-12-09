@@ -98,3 +98,54 @@ function checkoutEntireCart(cart_ID){
 document.addEventListener('DOMContentLoaded', function(){
     loadingItemsToCart(); //with page refresh, load cart
 });
+
+//payment popup
+const checkoutBtn = document.getElementById('checkoutBtn');
+const paymentPopUp = document.getElementById('paymentPopUp');
+const payNowBtn = document.getElementById('payNowBtn');
+
+let checkoutMode = 'cart';
+let checkoutCart_ID = null;
+
+//when checkout button is clicked, popup is revealed
+function showPaymentPopup(mode, cart_ID = null){
+    checkoutMode = mode;4
+    checkoutCart_ID = cart_ID;
+    paymentPopUp.classList.add('active');
+    
+}
+
+//hide popup
+function hidePayPopup(){
+    if(!paymentPopUp){return;}
+    paymentPopUp.classList.remove('active');
+}
+
+//processing payment
+
+function paymentProcessing(){
+    const cardNum = document.querySelector('#paymentPopup input[placeholder="1234 5678 9012 3456"]').value;
+    const expiryDate = document.querySelector('#paymentPopup input[placeholder="MM/YY"]').value;
+    const cvv = document.querySelector('#paymentPopup input[placeholder="123"]').value;
+
+    if(!cardNum || !expiryDate || !cvv){
+        alert("Enter all card info details!");
+        return;
+    }
+    if(checkoutMode == 'cart'){
+        checkoutEntireCart();
+    }else{
+        checkoutSingleItem(checkoutCart_ID);
+    }
+    hidePayPopup();
+    alert('Payment Completed!');
+}
+
+//closes popup when clicked elsewhere on page
+paymentPopUp.addEventListener('click', function(e) {
+    if(e.target === this) {
+        hidePayPopup();
+    }
+});
+
+
