@@ -6,6 +6,17 @@ if(!isset($_SESSION['cart'])){ //when cart in session
     $_SESSION['cart'] = [];
 }
 
+$products = [
+    "1" => ["name"=> "NFT 1", "price" =>10, "image"=>"images/divine.png"],
+    "2" => ["name"=> "NFT 2", "price" =>5.525, "image"=>"images/mint1.jpeg"],
+    "3" => ["name"=> "NFT 3", "price" =>0.39, "image"=>"images/mint2.jpeg"],
+    "4" => ["name"=> "NFT 4", "price" =>483.90, "image"=>"images/mint3.jpeg"],
+    "5" => ["name"=> "NFT 5", "price" =>5.618, "image"=>"images/mint4.jpeg"],
+    "6" => ["name"=> "NFT 6", "price" =>30.50, "image"=>"images/mint5.jpeg"],
+    "7" => ["name"=> "NFT 7", "price" =>0.5519, "image"=>"images/mint6.jpeg"],
+    "8" => ["name"=> "NFT 8", "price" =>9.99, "image"=>"images/mint7.jpeg"],
+];
+
 $action = $_GET['action'] ?? $_POST['action'] ?? ''; //ajax
 
 switch($action){ //switch case for cart actions like add, delete, update, checkout single, checkout all
