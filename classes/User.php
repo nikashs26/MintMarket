@@ -113,10 +113,7 @@ class User {
         $profile['nfts_created'] = $stmt->fetchColumn();
 
         // Total Sales (sum of amounts where user was seller)
-        // Note: In transactions table, 'to_user_id' is the seller receiving money in a 'sale'
-        // Wait, logic check: In a sale, money goes TO the seller. So to_user_id is seller.
-        // Let's verify transaction structure: from_user (buyer) -> to_user (seller).
-        // Yes.
+
         $stmt = $this->db->prepare("SELECT SUM(amount) FROM transactions WHERE to_user_id = ? AND transaction_type = 'sale'");
         $stmt->execute([$userId]);
         $profile['total_sales'] = $stmt->fetchColumn() ?: "0.00000000";

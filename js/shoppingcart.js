@@ -1,13 +1,3 @@
-//use ajax php to update cart without refreshing whole page, 
-//just update the div and add anotehr item to cart 
-//add function from this website: https://www.w3schools.com/PHP/php_ajax_database.asp 
-
-//functions:
-// load to cart
-// order summary updates
-//update delete item 
-//update quantity of item 
-//update add item
 
 function loadingItemsToCart() {
     const xhttp = new XMLHttpRequest(); //making ajax request to smoothly update div in cart w/out updating whole page

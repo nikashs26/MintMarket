@@ -637,16 +637,7 @@ function updateSummary(subtotal) {
     if (subtotalEl) subtotalEl.textContent = `${subtotal.toFixed(2)} MTK`;
     if (feeEl) feeEl.textContent = `${platformFee.toFixed(2)} MTK`;
     if (totalEl) totalEl.textContent = `${total.toFixed(2)} MTK`;
-    // if (checkoutBtn) {
-    //     checkoutBtn.disabled = subtotal === 0;
-    //     if (subtotal === 0) {
-    //         checkoutBtn.style.opacity = '0.5';
-    //         checkoutBtn.style.cursor = 'not-allowed';
-    //     } else {
-    //         checkoutBtn.style.opacity = '1';
-    //         checkoutBtn.style.cursor = 'pointer';
-    //     }
-    // }
+
 }
 
 async function checkout() {
