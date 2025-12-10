@@ -22,36 +22,8 @@ function loadCheckoutItems() {
 }
 
 async function loadSingleItem(listingId) {
-    // This assumes we have an API to get listing details by ID. 
-    // Since getActiveListings fetches many, we might need a specific one.
-    // However, for MVP let's reuse api.js or existing PHP endpoints.
-    // If api.js doesn't have getListingById, we can try to fetch all and find it, or use cart_functionalities hack?
-    // Better: use api/nft.php?action=get_all if listing_id is part of it? No listing_id is specific.
-    // Wait, the user wants "Buy" button redirections.
-    // Let's rely on api.js logic but we need to fetch the listing data.
-
-    // TEMPORARY SOLUTION: Since I don't see a clear 'get_listing_by_id' endpoint in previous file views,
-    // I will try to fetch via a new AJAX call to a helper or just reuse api.getActiveListings for now with a limit.
-    // Actually, let's create a server-side helper if needed?
-    // Or just fetch `api/listing.php`? (I need to check if it exists).
-
-    // Let's assume we can use `cart_functionalities.php` if we modify it, but that's for cart.
-    // Let's check `api/nft.php` again. It has `get_by_id` but that is NFT data, not Listing data (price).
-    // `classes/Marketplace.php` has `getNFTById` which joins listings! So api/nft.php?action=get_by_id contains listing info and price!
-
-    // Wait, `get_by_id` endpoint calls `$nftModel->getNFTById($nftId)`.
-    // But `listingId` is what we have from URL.
-    // `buyNFT` function in app.js takes `listingId`.
-    // We need to map ListingID to NFT data.
-    // Marketplace.php has `getNFTById`.
-    // Listing table links NFT_ID and Listing_ID.
-    // We might need to iterate or add an endpoint.
-
-    // Strategy: Modify api/nft.php/Marketplace.php effectively? No, I should stick to client side if possible.
-    // But how to get price for listing X?
-    // Let's fetch all active listings and find it client-side. inefficient but works for MVP.
-    // Update: api.getActiveListings supports search/tags.
-    // We can just fetch all (limit 100) and find listing ID.
+    // Fetch active listings to find the specific item details (including price)
+    // using the existing marketplace API.
 
     const container = document.getElementById('orderItems');
     container.innerHTML = '<div class="loading">Fetching item details...</div>';
@@ -200,45 +172,13 @@ async function confirmPayment() {
         // Mock delay for card processing
         await new Promise(r => setTimeout(r, 1500));
 
-        // Success logic same as token (assuming card pays for it)
-        // In a real app, we'd top up balance then pay, or use a different endpoint.
-        // For MVP, we will attempt the purchase logic which DEDUCTS BALANCE.
-        // Since user said "pay by card", maybe we shouldn't deduct balance?
-        // But the backend `buyNFT` strictly deducts balance.
-        // Option: Mock "Top Up" then Buy.
-        // Let's just alert success for Card and redirect, assuming external logic handled it.
-        // OR better: Assume "Card" also goes through the same backend flow (mocking a direct fiat purchase).
-        // Let's try to actually buy it. If balance is low, card payment fails? No, card should work.
-        // For simple MVP: Card Payment Payment -> Auto-Success (and maybe we skip balance check? No, backend enforces it).
-        // We will just try to proceed. If it fails due to funds, we say "Card Declined" (even if it's balance).
-
-        // Actally, let's use the same backend call. If user has 0 balance, they can't buy even with card unless we change backend.
-        // I will assume for now users have balance (seeded with 1000).
+        // Simulate processing delay and proceed to success logic (backend balance check will still occur)
     }
 
     if (currentMode === 'single') {
         // Execute single purchase
-        // We need an endpoint for buying listing.
-        // Marketplace.php has logic, usually exposed via some API.
-        // app.js uses `buyNFT` which calls... nothing clearly visible in my previous read of app.js?
-        // Wait, app.js `buyNFT` implementation was cut off.
-        // I need to check how to actually execute the buy.
-        // Assuming `cart_functionalities.php` handles cart?
-        // Let's assume `api/listing.php` or `cart_functionalities.php` handles it.
-        // `cart_functionalities.php` has `checkoutSingleItem`.
-
-        // Let's use `cart_functionalities.php` action `checkoutSingleItem`? No that likely takes cart_id.
-        // If I am buying directly a Listing, I need to call the buy endpoint.
-        // Let's check `api/nft.php`? It has `transfer` but that is for owner.
-        // I suspect I might need to Create a new endpoint or find where `buyNFT` points.
-        // Wait, I will use `cart_functionalities.php` if I can add it to cart and checkout instantly?
-        // Or simply `api/market.php`?
-
-        // Let's try to assume there is an endpoint. I will verify `buyNFT` logic in app.js in next step if I'm unsure.
-        // But for now, let's assume we can POST to `cart_functionalities.php` with a special action if available, or just implement it.
-        // Actually, `Marketplace.php` has `buyNFT`.
-        // I will Create a dedicated `api/buy.php` action if needed, or check `classes/Marketplace.php`.
-        // Let's Assume the backend file `api/buy.php` needs to be created or `cart_functionalities.php` extended.
+        // Create a temporary endpoint api/buy.php (or dedicated action) if needed, 
+        // but for now relying on creating api/buy.php as discussed in plan.
 
         // Implementing logic to call backend:
         try {

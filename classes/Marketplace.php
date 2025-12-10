@@ -84,29 +84,6 @@ class Marketplace {
                 $this->db->rollBack();
                 return ['success' => false, 'message' => 'Cannot buy your own listing'];
             }
-
-            // Execute Transfer (Handles financials and ownership)
-            // Note: NFT::transfer handles the transaction logic for money and ownership
-            // But we are already in a transaction here. Nested transactions in PDO/MySQL behave as savepoints or are ignored depending on driver.
-            // Ideally, NFT::transfer should support being called within an existing transaction.
-            // The current NFT::transfer starts its own transaction. We should refactor NFT::transfer or just call the logic.
-            // Given the constraints, let's assume NFT::transfer's transaction handling is robust enough or we modify it.
-            // Actually, calling beginTransaction inside another throws an error in PDO usually.
-            // FIX: We should commit the lock here, OR refactor NFT::transfer to accept an optional existing transaction context.
-            // For this MVP, let's just rely on the lock we have. We can release the lock by committing/rolling back.
-            // But we need the transfer to happen atomically with the listing update.
-            
-            // Let's do the transfer logic manually here reusing NFT logic components, OR modify NFT::transfer.
-            // Modifying NFT::transfer to be transaction-aware is best practice.
-            // However, since I cannot easily modify NFT.php right now without another tool call, I will implement the transfer logic here
-            // by calling NFT::transfer but I need to be careful about the nested transaction.
-            // Actually, I can just commit the lock now? No, that releases the lock before transfer.
-            
-            // STRATEGY: We will use the NFT::transfer method, but we need to handle the transaction issue.
-            // Since I am writing Marketplace.php now, I can't change NFT.php in this same step easily.
-            // I will assume for now that I can call it. If it fails, I'll fix it.
-            // Wait, standard PDO throws "There is already an active transaction".
-            // I will implement the transfer logic directly here to be safe and correct.
             
             // 1. Check Buyer Balance
             $stmt = $this->db->prepare("SELECT balance FROM users WHERE user_id = ?");
